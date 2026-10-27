@@ -1,0 +1,946 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CASTLECRAFT v3.2 — Twin Trebuchets</title>
+<style>
+:root{--bg:#15191d;--panel:#20262b;--panel2:#292f34;--stroke:#384149;--text:#f3e7cb;--dim:#9ca7a7;--gold:#f4bd65;--red:#de7851;--green:#8cbd8b}
+*{box-sizing:border-box}html,body{margin:0;min-width:320px;height:100%;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Arial,sans-serif}button,select,input{font:inherit}button{cursor:pointer;transition:background .12s,border-color .12s,transform .12s}button:active{transform:translateY(1px)}.app{min-height:100vh;display:flex;flex-direction:column}.top{height:68px;flex-shrink:0;display:flex;gap:18px;align-items:center;padding:0 24px;border-bottom:1px solid var(--stroke);background:#1a2024}.logo{display:flex;align-items:center;gap:13px;margin-right:15px}.brandmark{height:39px;width:39px;background:#3b3329;color:#e7b75e;display:grid;place-items:center;border:2px solid #a68551;box-shadow:inset 0 0 0 3px #292723;font-size:22px}.brandname{font-weight:950;letter-spacing:2px;font-size:18px;line-height:1}.brandsub{font-size:9px;color:#a9a59a;letter-spacing:2.8px;margin-top:6px;font-weight:800}.mode-switch{display:flex;align-items:center;background:#11161a;border:1px solid var(--stroke);padding:4px;gap:3px;border-radius:7px}.mode-switch button{border:0;border-radius:4px;color:#aeb7b5;background:transparent;padding:10px 17px;font-weight:850;font-size:12px;letter-spacing:.35px}.mode-switch button.active{background:#e2bc79;color:#25211c}.top-spacer{flex:1}.tag{display:flex;gap:8px;align-items:center;font-weight:800;color:#b0b9b9;font-size:11px;letter-spacing:.7px;white-space:nowrap}.dot{height:7px;width:7px;background:#80c49c;display:inline-block;border-radius:50%;box-shadow:0 0 10px #80c49c44}.small-button{background:#293139;border:1px solid #444f53;color:#dfd7c7;border-radius:6px;padding:9px 12px;font-size:12px;font-weight:800}.small-button:hover{background:#3b464c}.main{display:grid;grid-template-columns:248px minmax(0,1fr) 276px;min-height:calc(100vh - 68px)}.sidebar{background:#20262b;padding:23px 17px 18px;border-right:1px solid #364047;display:flex;flex-direction:column;gap:17px}.sidebar.right{border-right:0;border-left:1px solid #364047}.eyebrow{font-size:10px;color:#dbb773;letter-spacing:2.2px;font-weight:900;margin-bottom:4px}.sidehead{font-size:21px;font-weight:900;letter-spacing:-.7px}.subtitle{color:#9ba4a5;font-size:12px;line-height:1.55}.sectionline{border-top:1px solid #3a4347;margin:3px 0 0}.sectionlabel{color:#b4b7ad;font-size:10px;font-weight:900;letter-spacing:1.7px;margin-bottom:9px}.tools{display:grid;grid-template-columns:1fr 1fr;gap:7px}.tool{position:relative;min-height:83px;border:1px solid #3b464d;color:#ded8c8;background:#292f35;border-radius:7px;padding:12px 8px 9px;text-align:left}.tool:hover{border-color:#8e8779;background:#313940}.tool.selected{background:#433a2c;border-color:#e4ad60;box-shadow:inset 0 0 0 1px #e4ad603c}.tool .pic{font-family:Georgia,serif;color:#e5b86f;font-size:26px;display:block;line-height:28px;height:29px}.tool .label{font-weight:850;font-size:11px;display:block;margin-top:7px}.tool .key{position:absolute;right:8px;top:7px;color:#89959c;font-size:10px;font-weight:700}.tool.selected .key{color:#f4c37b}.hint{background:#252c31;border:1px solid #364047;border-radius:7px;color:#abb5b0;font-size:11px;line-height:1.6;padding:12px}.hint strong{color:#e3d6bd}.push{flex:1}.primary{border:1px solid #f6c17f;background:#eab76c;color:#26221d;box-shadow:inset 0 1px #ffe2af;font-weight:950;letter-spacing:.45px;border-radius:6px;padding:13px 10px;font-size:12px}.primary:hover{background:#f6cb8b}.secondary{background:#343c42;color:#e6ded0;border:1px solid #4a555b;border-radius:6px;font-weight:800;padding:10px 11px;font-size:12px}.secondary:hover{background:#434c52}.danger{color:#eead90;border-color:#765146}.button-row{display:grid;grid-template-columns:1fr 1fr;gap:7px}.stage-wrap{min-width:0;position:relative;display:flex;flex-direction:column;background:#9f9683}.stage-head{position:absolute;top:18px;left:22px;z-index:2;pointer-events:none;text-shadow:0 1px 2px #d3c5a3}.stage-head .eyebrow{color:#7e6238;font-size:10px}.stage-title{font-size:23px;font-weight:1000;letter-spacing:-.8px;color:#3c3327}.stage-sub{color:#695d4c;font-weight:750;font-size:12px;margin-top:3px}.world{width:100%;height:100%;min-height:560px;position:absolute;inset:0;overflow:hidden}.world canvas{display:block;position:absolute;width:100%;height:100%;image-rendering:pixelated;cursor:crosshair;touch-action:none}.viewport{position:relative;min-height:650px;flex:1;overflow:hidden}.scene-controls{position:absolute;right:17px;top:17px;display:flex;gap:6px;z-index:4}.scene-controls button{width:34px;height:34px;border-radius:5px;border:1px solid #8a7860;background:#e4d2acdc;color:#403b30;font-size:16px;font-weight:900}.scene-controls button:hover{background:#fff2d6}.status-bar{position:absolute;bottom:18px;left:18px;right:18px;display:flex;align-items:center;gap:7px;z-index:4;flex-wrap:wrap;pointer-events:none}.pill{padding:9px 10px;background:#253039e9;border:1px solid #4d504d;color:#ecdfc7;border-radius:5px;font-size:11px;font-weight:850;box-shadow:0 2px 8px #0003}.pill.accent{color:#ffe0a3}.tutorial-card{position:absolute;left:24px;bottom:74px;max-width:320px;background:#f8eccedc;color:#463c2c;border:1px solid #b7a47c;border-radius:8px;padding:13px 15px;font-size:12px;line-height:1.5;z-index:3;box-shadow:0 3px 20px #44341c2c;pointer-events:none}.tutorial-card strong{display:block;font-size:13px;margin-bottom:4px}.card{border:1px solid #40494e;background:#283037;border-radius:7px;padding:14px}.stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px}.stat{background:#232b31;border:1px solid #384249;border-radius:6px;padding:12px}.stat-val{font-size:23px;font-weight:950;color:#f0c17b;font-variant-numeric:tabular-nums}.stat-lab{color:#a4afb0;font-size:10px;font-weight:800;letter-spacing:.5px;margin-top:2px}.inspector-title{font-weight:950;font-size:17px}.inspector-desc{font-size:12px;color:#aeb4b2;line-height:1.55;margin:8px 0}.health-track{height:8px;background:#12191c;border-radius:5px;overflow:hidden;border:1px solid #3b4b50}.health-fill{height:100%;width:100%;background:#91bc81;transition:width .2s}.row-between{display:flex;justify-content:space-between;gap:8px;align-items:center}.meta{font-size:11px;color:#aab2b1}.divider{height:1px;background:#3a444b}.battle-panel{display:none;flex-direction:column;gap:12px}.battle-panel.show{display:flex}.build-panel{display:flex;flex-direction:column;gap:12px}.build-panel.hide{display:none}.eventfeed{max-height:142px;overflow:auto;font-size:11px;line-height:1.55;color:#bac2bb;display:flex;flex-direction:column;gap:6px}.eventfeed div{border-bottom:1px solid #374149;padding-bottom:5px}.eventfeed b{color:#f0c17b}.progress-track{height:9px;background:#11191d;overflow:hidden;border-radius:5px;border:1px solid #47514d}.progress-fill{height:100%;width:0%;background:linear-gradient(90deg,#b7634b,#eaaa6b);transition:width .3s}.battle-title{font-size:15px;font-weight:900;color:#f0c17b}.choice{background:#141b1f;color:#f5dcb6;border:1px solid #4e5557;border-radius:6px;padding:9px;width:100%;font-size:12px}.footer{padding:10px 18px;display:flex;justify-content:space-between;color:#727d80;font-size:10px;letter-spacing:.35px;background:#181e22;border-top:1px solid #353e45}.toast{position:absolute;left:50%;top:85px;transform:translateX(-50%);background:#242a29ed;color:#f6dcaa;border:1px solid #d7a65a;border-radius:6px;padding:10px 16px;box-shadow:0 8px 30px #0003;font-weight:900;font-size:12px;opacity:0;transition:opacity .2s;pointer-events:none;z-index:8;white-space:nowrap}.toast.show{opacity:1}.result-overlay{position:absolute;inset:0;background:#1a1716b5;z-index:8;display:none;align-items:center;justify-content:center;padding:20px}.result-overlay.show{display:flex}.result-box{background:#252c30;border:2px solid #dbb06e;border-radius:9px;padding:28px;max-width:420px;text-align:center;box-shadow:0 10px 70px #0009}.result-box h2{font-size:27px;margin:9px 0;color:#f2ce8c}.result-box p{line-height:1.65;color:#bcc4c0;font-size:13px}.result-box .primary{margin-top:12px;width:100%}.kbd{color:#efc889}.toggle-row{display:flex;align-items:center;gap:9px;color:#bfc3ba;font-size:12px}.toggle-row input{accent-color:#d8aa64}.legend{display:flex;gap:9px;color:#b3bbb8;font-size:11px;align-items:center}.legend i{width:10px;height:10px;display:inline-block;background:#8cbf8f}.legend i.red{background:#dd825a}@media(max-width:1150px){.main{grid-template-columns:207px minmax(0,1fr) 220px}.sidebar{padding:17px 11px}.tool{min-height:75px;padding:9px 7px}.tool .pic{font-size:23px}.top{padding:0 12px;gap:8px}.brandname{font-size:15px}.tag{display:none}.mode-switch button{padding:9px 10px}}@media(max-width:820px){.main{grid-template-columns:1fr}.top{height:auto;min-height:63px;flex-wrap:wrap;padding:9px 12px}.main .sidebar{border:0;border-bottom:1px solid #3a4347}.sidebar.left{order:2}.stage-wrap{order:1}.sidebar.right{order:3}.viewport{min-height:510px}.world{min-height:450px}.tools{grid-template-columns:repeat(5,1fr)}.tool{min-height:64px}.tool .pic{font-size:20px;height:20px;line-height:20px}.tool .label{font-size:9px}.footer{flex-wrap:wrap;gap:6px}.tutorial-card{max-width:260px}.sidehead{font-size:18px}}@media(max-width:490px){.tools{grid-template-columns:repeat(3,1fr)}.logo{margin-right:0}.brandname{font-size:13px}.mode-switch{width:100%}.mode-switch button{flex:1}.viewport{min-height:410px}.stage-title{font-size:17px}.stage-head{left:12px;top:12px}.stage-sub{display:none}.scene-controls{top:63px;right:9px}.status-bar{left:8px;right:8px;bottom:8px}.pill{font-size:9px;padding:7px}.tutorial-card{bottom:53px;left:8px;max-width:230px;padding:8px;font-size:10px}}
+/* V2: sharp, readable UI + better scaling */
+.top{min-height:76px;height:auto;padding-top:9px;padding-bottom:9px}.mode-switch button{font-size:13px}.brandname{font-size:20px}.brandsub{font-size:10px}.small-button,.primary,.secondary{font-size:13px}.subtitle,.inspector-desc,.hint{font-size:13px}.sectionlabel,.eyebrow{font-size:11px}.tool .label{font-size:12px}.tool .key{font-size:11px}.sidehead{font-size:22px}.tool{min-height:89px}.tool .pic{font-size:28px}.stat-lab{font-size:11px}.meta,.toggle-row,.legend,.eventfeed{font-size:12px}.stage-title{font-size:26px}.stage-sub{font-size:13px}.pill{font-size:12px}.scene-controls button{width:39px;height:39px;font-size:19px}.world canvas{image-rendering:pixelated;image-rendering:crisp-edges}.tutorial-card{font-size:13px;max-width:360px}.tutorial-card strong{font-size:14px}.choice{font-size:13px}.health-track,.progress-track{height:12px}
+@media(max-width:1150px){.main{grid-template-columns:225px minmax(0,1fr) 242px}.tools{gap:5px}.tool{padding:10px 6px}.stage-title{font-size:22px}}
+@media(max-width:820px){.main{grid-template-columns:1fr}.viewport{min-height:540px}.tools{grid-template-columns:repeat(6,1fr)}.world{min-height:480px}}
+@media(max-width:490px){.tools{grid-template-columns:repeat(3,1fr)}.viewport{min-height:430px}.tool{min-height:75px}.scene-controls button{width:35px;height:35px}}
+
+/* Keep pixels square: side panels scroll, 3D view always retains its native aspect ratio. */
+@media(min-width:821px){.main{height:calc(100dvh - 111px);min-height:650px;overflow:hidden}.sidebar{min-height:0;overflow-y:auto;scrollbar-width:thin;scrollbar-color:#5b554c #242a2c}.viewport{min-height:0;height:100%}.stage-wrap{min-height:0;height:100%}}
+.world{display:flex;justify-content:center;align-items:center;background:linear-gradient(180deg,#e2d5b4,#b2a98d)}
+.world canvas{position:relative;width:100%;height:100%;object-fit:contain;aspect-ratio:940/640;max-width:100%;max-height:100%}
+@media(max-width:820px){.main{height:auto;overflow:visible}.sidebar{overflow:visible}.viewport{min-height:560px;height:560px}.world{min-height:0}}
+@media(max-width:490px){.viewport{min-height:430px;height:430px}}
+
+/* V3: compact localization controls, richer terrain tool palette, high-contrast pixel text. */
+.lang-switch{display:flex;gap:3px;background:#121a1e;border:1px solid #49545c;border-radius:6px;padding:3px;flex-shrink:0}
+.lang-switch button{padding:8px 11px;border:0;border-radius:4px;background:transparent;color:#b4bab7;font-size:12px;font-weight:950;letter-spacing:.6px}
+.lang-switch button.active{background:#e4bb78;color:#28231d}
+.tools{grid-template-columns:repeat(2,minmax(0,1fr))}.tool{min-height:76px;padding:8px}.tool .label{font-size:12px}
+.tool[data-tool^="stairs"],.tool[data-tool="raise"],.tool[data-tool="lower"],.tool[data-tool="rock"]{background:#30392f}
+.tool.selected{background:#51422d!important}
+.world canvas{image-rendering:pixelated}
+.stair-direction{padding:12px;background:#28342f;border:1px solid #556650;border-radius:8px;display:flex;flex-direction:column;gap:8px;color:#ecd9b6}
+.stair-direction label{font-size:12px;font-weight:900}.stair-direction small{font-size:10px;line-height:1.45;color:#b4c3ab}
+.lang-switch button{padding:8px 10px}
+.stage-head{background:linear-gradient(90deg,#e6d7b3c9,#e6d7b300);padding:8px 23px 9px 10px;border-radius:4px}
+#heightPill{color:#bad4a3}
+@media(min-width:821px){.main{min-height:620px}}
+@media(max-width:820px){.tools{grid-template-columns:repeat(5,minmax(0,1fr))}}
+@media(max-width:490px){.tools{grid-template-columns:repeat(3,minmax(0,1fr))}}
+.troop-config{display:grid;grid-template-columns:1fr 1fr;gap:8px}.troop-field{display:flex;flex-direction:column;gap:7px;background:#283137;border:1px solid #414e50;border-radius:7px;padding:9px;color:#e0d3b9;font-size:11px;font-weight:800}.troop-field input{width:100%;background:#141d20;border:1px solid #6d736a;color:#ffda98;border-radius:5px;min-height:36px;font-weight:900;text-align:center;font-size:19px}.troop-field input:focus{outline:2px solid #e9be78}.troop-field input:disabled{opacity:.5}#artilleryHint{font-size:10px;padding:9px;line-height:1.35}
+</style>
+</head>
+<body>
+<div class="app">
+<header class="top">
+ <div class="logo"><div class="brandmark">♜</div><div><div class="brandname">CASTLECRAFT</div><div class="brandsub">BUILD & SIEGE · V3.2</div></div></div>
+ <div class="mode-switch"><button id="tabBuild" class="active">⚒ СТРОИТЕЛЬСТВО</button><button id="tabSiege">⚔ ШТУРМ ЗАМКА</button></div>
+ <div class="top-spacer"></div><div class="lang-switch" aria-label="Language"><button id="langRU" class="active" title="Русский">RU</button><button id="langEN" title="English">EN</button><button id="langDE" title="Deutsch">DE</button></div><div class="tag"><span class="dot" id="saveDot"></span><span id="saveInfo">АВТОСОХРАНЕНИЕ</span></div>
+ <button class="small-button" id="exportBtn" title="Экспорт замка в файл JSON">⇩ Сохранить файл</button><button class="small-button" id="importBtn" title="Загрузить замок из файла JSON">⇧ Загрузить</button><input type="file" id="filePicker" accept=".json,application/json" hidden>
+</header>
+<div class="main">
+<aside class="sidebar left">
+ <div><div class="eyebrow">МАСТЕРСКАЯ</div><div class="sidehead">Построй королевство</div><div class="subtitle">Размещай постройки на острове, укрепляй стены и проверь оборону боем.</div></div>
+ <div class="sectionline"></div><div><div class="sectionlabel">ПОСТРОЙКИ</div><div class="tools" id="tools"></div></div>
+ <div class="hint" id="toolHint"><strong>Подсказка</strong> — выбери постройку, затем кликни по земле. Можно удерживать мышь для строительства стен.</div>
+ <div class="stair-direction" id="stairDirectionBar" style="display:none"><label id="stairDirectionLabel" for="stairFacing">Направление лестницы</label><select id="stairFacing" class="choice"><option value="auto">Автоматически</option><option value="0">Север ↑</option><option value="1">Восток →</option><option value="2">Юг ↓</option><option value="3">Запад ←</option></select><small id="stairInfo">Направление указывает на нижнюю сторону подъёма.</small></div>
+ <div class="push"></div><button class="primary" id="attackMain">⚔ НАЧАТЬ ОСАДУ</button>
+ <div class="button-row"><button class="secondary" id="undoBtn">↶ Отменить</button><button class="secondary" id="clearBtn">Очистить</button></div>
+ <div class="button-row"><button class="secondary" id="restoreBtn">Образец</button><button class="secondary" id="repairBtn">✦ Починить</button></div>
+ <div class="hint"><strong>Управление:</strong> ЛКМ — строить · перетаскивание — рисовать · <span class="kbd">Q/E</span> — поворот · колесо — масштаб · <span class="kbd">1–0</span> — инструменты · <span class="kbd">F</span> — знамя.</div>
+</aside>
+<section class="stage-wrap"><div class="viewport" id="viewport">
+ <div class="stage-head"><div class="eyebrow" id="sceneEyebrow">СВОБОДНОЕ СТРОИТЕЛЬСТВО</div><div class="stage-title" id="sceneTitle">Долина Каменных Башен</div><div class="stage-sub" id="sceneSub">Остров 25 × 25 · поверни камеру, чтобы осмотреть замок</div></div>
+ <div class="world"><canvas id="canvas" width="940" height="640" aria-label="Изометрический конструктор замка"></canvas></div>
+ <div class="scene-controls"><button id="rotL" title="Повернуть камеру влево (Q)">↶</button><button id="rotR" title="Повернуть камеру вправо (E)">↷</button><button id="zoomOut" title="Отдалить">−</button><button id="zoomIn" title="Приблизить">+</button></div>
+ <div class="tutorial-card" id="tutorial"><strong>🏰 Твой замок уже построен!</strong>Кликни по клетке, чтобы построить секцию — камни соберутся на глазах. Поставь флаг инструментом «Знамя»: враг победит только после его захвата.</div>
+ <div class="status-bar"><div class="pill accent" id="modePill">⚒ РЕЖИМ СТРОИТЕЛЬСТВА</div><div class="pill">25 × 25</div><div class="pill" id="coordsPill">Клетка —</div><div class="pill" id="heightPill">Высота: —</div><div class="pill" id="selectedPill">Выбрано: Стена</div></div>
+ <div class="toast" id="toast"></div>
+ <div class="result-overlay" id="result"><div class="result-box"><div style="font-size:37px" id="resultIcon">🏰</div><h2 id="resultTitle">Осада окончена</h2><p id="resultText"></p><button class="primary" id="resultAgain">↻ ПОВТОРИТЬ ОСАДУ</button><button class="secondary" id="resultBack" style="margin-top:9px;width:100%">Вернуться в мастерскую</button></div></div>
+ </div></section>
+<aside class="sidebar right">
+ <div><div class="eyebrow">ОБЗОР КОРОЛЕВСТВА</div><div class="sidehead" id="rightTitle">Твоя крепость</div><div class="subtitle" id="rightSubtitle">Небольшой гарнизон. Большие амбиции.</div></div>
+ <div class="sectionlabel" id="troopHeading" style="margin:0">ЧИСЛЕННОСТЬ ВОЙСК</div>
+ <div class="troop-config" id="troopConfig"><label class="troop-field"><span>Атакующие солдаты</span><input id="attackersCount" type="number" min="1" max="60" step="1" value="8" inputmode="numeric"></label><label class="troop-field"><span>Защитники крепости</span><input id="defendersCount" type="number" min="0" max="24" step="1" value="4" inputmode="numeric"></label></div>
+ <div class="hint" id="artilleryHint">⚒ 1 большой требушет — мощный, неточный. 1 малый — точный, но слабее.</div>
+ <div class="stat-grid"><div class="stat"><div class="stat-val" id="statBuild">0</div><div class="stat-lab">ПОСТРОЕК</div></div><div class="stat"><div class="stat-val" id="statWalls">0</div><div class="stat-lab">УКРЕПЛЕНИЙ</div></div><div class="stat"><div class="stat-val" id="statTowers">0</div><div class="stat-lab">БАШЕН</div></div><div class="stat"><div class="stat-val" id="statDefense">0%</div><div class="stat-lab">ПРОЧНОСТЬ</div></div></div>
+ <div class="build-panel" id="buildPanel">
+  <div class="sectionline"></div><div class="sectionlabel">ИНСПЕКТОР ПОСТРОЙКИ</div>
+  <div class="card"><div class="row-between"><span class="inspector-title" id="inspectName">Каменная стена</span><span id="inspectIcon" style="font-size:24px;color:#f1c57e">▥</span></div><p class="inspector-desc" id="inspectDesc">Защищает крепость от атак.</p><div class="row-between meta"><span>Прочность</span><span id="inspectHP">110 / 110</span></div><div class="health-track" style="margin-top:7px"><div class="health-fill" id="inspectBar"></div></div><div class="meta" style="margin-top:10px" id="inspectCoords">Наведи на постройку, чтобы осмотреть её.</div></div>
+  <div class="sectionlabel">ПЛАН ОБОРОНЫ</div><div class="hint">Башни стреляют по атакующим. Ворота и стены задерживают солдат. Два требушета разбивают укрепления. Холмы и обрывы преграждают путь, а лестницы открывают проход. Победа только после смены знамени.</div>
+ </div>
+ <div class="battle-panel" id="battlePanel">
+  <div class="sectionline"></div><div class="battle-title" id="battleState">ИДЁТ ОСАДА</div>
+  <div class="stat-grid"><div class="stat"><div class="stat-val" id="battleKills">0</div><div class="stat-lab">ПОБЕЖДЕНО</div></div><div class="stat"><div class="stat-val" id="battleLeft">0</div><div class="stat-lab">НАСТУПАЮЩИХ</div></div></div>
+  <div class="row-between meta"><span>Войска введены в бой</span><b id="battlePct">0%</b></div><div class="progress-track"><div class="progress-fill" id="battleProgress"></div></div>
+  <div class="sectionlabel" style="margin:4px 0 -6px">ЗАХВАТ ЗНАМЕНИ</div><div class="row-between meta"><span id="flagStatus">Синий флаг поднят</span><b id="capturePct">0%</b></div><div class="progress-track"><div class="progress-fill" id="captureProgress" style="background:linear-gradient(90deg,#c7785e,#edb16f)"></div></div><div class="meta" style="margin-top:-5px" id="battleGuards">Стража у флага: 4 / 4</div>
+  <button class="secondary" id="pauseBtn">Ⅱ Пауза</button><button class="secondary" id="repeatBtn">↻ Повторить штурм</button><button class="secondary danger" id="backBtn">← Вернуться к строительству</button>
+  <div class="sectionlabel">ХРОНИКА БОЯ</div><div class="card eventfeed" id="feed"></div>
+ </div>
+ <div class="push"></div><div class="sectionline"></div>
+ <div class="sectionlabel">НАСТРОЙКИ ОСАДЫ</div><select class="choice" id="difficulty"><option value="easy">Лёгкая · небольшой отряд</option><option value="normal" selected>Обычная · два требушета</option><option value="hard">Тяжёлая · большая армия</option></select>
+
+ <label class="toggle-row"><input type="checkbox" id="particlesToggle" checked> Пыль, осколки и обломки</label>
+ <div class="legend"><i></i> Защитники <i class="red"></i> Атакующие</div>
+</aside>
+</div><div class="footer"><span>CASTLECRAFT · БРАУЗЕРНЫЙ ПРОТОТИП · ОФЛАЙН · 25×25 · V3.2</span><span>Автосохранение в этом браузере · экспорт/импорт JSON для резервной копии</span></div>
+</div>
+<script>
+'use strict';
+(()=>{
+const N=25, W=940,H=640, SX=17.0,SY=8.5,SZ=17.5, SAVEKEY='castlecraft-blueprint-v3', OLDKEY='castlecraft-blueprint-v2', LEGACYKEY='castlecraft-blueprint-v1';
+const $=id=>document.getElementById(id);
+const canvas=$('canvas'), screen=canvas.getContext('2d',{alpha:false});
+const low=document.createElement('canvas'); low.width=W;low.height=H;
+const g=low.getContext('2d',{alpha:false});screen.imageSmoothingEnabled=false;
+const defs={
+ wall:{name:'Стена',icon:'▥',desc:'Собирается камень за камнем. Повреждения заметны при обстреле.',hp:125},
+ tower:{name:'Башня',icon:'♜',desc:'Высокая оборонительная башня. Лучники обстреливают врагов.',hp:220},
+ gate:{name:'Ворота',icon:'⌸',desc:'Уязвимый вход во двор замка. Первостепенная цель катапульт.',hp:170},
+ keep:{name:'Донжон',icon:'♛',desc:'Главная башня замка. Для победы врагу всё равно требуется захватить знамя.',hp:480},
+ house:{name:'Дом',icon:'⌂',desc:'Красная черепичная крыша и уютные комнаты.',hp:95},
+ barracks:{name:'Казарма',icon:'⚑',desc:'Укреплённый гарнизон. Помогает защитникам отбивать осаду.',hp:145},
+ tree:{name:'Ель',icon:'♠',desc:'Высокая хвойная ель.',hp:55},
+ oak:{name:'Лиственное дерево',icon:'♣',desc:'Объёмная широкая крона с пиксельной листвой.',hp:65},
+ bush:{name:'Куст',icon:'❀',desc:'Низкий зелёный куст с цветами.',hp:25},
+ bridge:{name:'Деревянный мост',icon:'═',desc:'Клади на воду или берег. По мосту солдаты пересекают ров.',hp:0},
+ raise:{name:'Поднять',icon:'▲',desc:'Повышает высоту клетки на один уровень (до 4).',hp:0},
+ lower:{name:'Опустить',icon:'▼',desc:'Понижает высоту клетки на один уровень.',hp:0},
+ rock:{name:'Скала',icon:'◆',desc:'Создаёт каменную возвышенность с отвесными склонами.',hp:0},
+ stairsUp:{name:'Лестница вверх',icon:'↗',desc:'Поднимает клетку и укладывает лестницу. Пехота сможет преодолеть перепад в 1 уровень.',hp:0},
+ stairsDown:{name:'Лестница вниз',icon:'↘',desc:'Опускает клетку и укладывает лестницу. Пехота сможет преодолеть перепад в 1 уровень.',hp:0},
+ road:{name:'Дорога',icon:'▨',desc:'Мощёная дорожка для солдат и жителей.',hp:0},
+ water:{name:'Вода',icon:'≈',desc:'Небольшие водоёмы вокруг замка.',hp:0},
+ erase:{name:'Стереть',icon:'⌫',desc:'Убирает здание или выравнивает ландшафт.',hp:0},
+ flag:{name:'Знамя',icon:'⚑',desc:'Установи флаг во дворе. Враги побеждают только после его захвата.',hp:0}};
+const toolList=['wall','tower','gate','keep','house','barracks','tree','oak','bush','bridge','road','water','raise','lower','rock','stairsUp','stairsDown','erase','flag'];
+let b=[],terrain=[],heights=[],stairs=[],stairDirs=[],stairTypes=[],bridges=[],selected='wall',rot=0,zoom=1,hover=null,history=[],phase='build',battle=null,blueprint=null,painting=false,lastPaint='',now=0,dirty=false,toastTimer=null,events=[],hits=[],flag={x:10,y:11};
+function clamp(v,a,c){return Math.max(a,Math.min(c,v))}
+function rnd(n){let s=Math.sin(n*127.1+18.19)*43758.5453;return s-Math.floor(s)}
+function color(hex,f){let n=parseInt(hex.slice(1),16);let r=clamp(Math.round((n>>16)*f),0,255),g2=clamp(Math.round(((n>>8)&255)*f),0,255),b2=clamp(Math.round((n&255)*f),0,255);return `rgb(${r},${g2},${b2})`}
+function obj(type,x,y){return {type,x,y,hp:defs[type].hp,max:defs[type].hp,built:1}}
+function find(x,y){return b.find(o=>o.x===x&&o.y===y&&o.hp>0)}
+function findAll(x,y){return b.find(o=>o.x===x&&o.y===y)}
+function ground(x,y){return x>=0&&y>=0&&x<N&&y<N?(terrain[y*N+x]||'grass'):'void'}
+function isBridge(x,y){return x>=0&&y>=0&&x<N&&y<N&&!!bridges[y*N+x]}
+function heightAt(x,y){return x>=0&&y>=0&&x<N&&y<N?(heights[y*N+x]||0):0}
+function stairAt(x,y){return x>=0&&y>=0&&x<N&&y<N?!!stairs[y*N+x]:false}
+const DIRS=[[0,-1],[1,0],[0,1],[-1,0]];
+// Direction represents the LOW end of the flight in world coordinates.
+function autoStairDirection(x,y,kind='up'){
+ const z=heightAt(x,y);
+ let options=DIRS.map(([dx,dy],dir)=>({dir,level:(x+dx>=0&&x+dx<N&&y+dy>=0&&y+dy<N)?heightAt(x+dx,y+dy):z}));
+ if(kind==='up'){
+  let lower=options.filter(v=>v.level<z).sort((a,b)=>{const score=o=>{let [dx,dy]=DIRS[o.dir],ox=x-dx,oy=y-dy,nx=x+dx,ny=y+dy;let opposite=heightAt(ox,oy);return (opposite>=z?10:0)+(nx>=0&&ny>=0&&nx<N&&ny<N&&ground(nx,ny)==='road'?5:0)+(ox>=0&&oy>=0&&ox<N&&oy<N&&ground(ox,oy)==='road'?3:0)+(o.dir===2?.1:0)};return score(b)-score(a)||a.level-b.level});
+  if(lower.length)return lower[0].dir;
+ }else{
+  let higher=options.filter(v=>v.level>z).sort((a,b)=>b.level-a.level);
+  if(higher.length)return (higher[0].dir+2)%4;
+ }
+ return 2;
+}
+function stairLowDirection(x,y){let i=y*N+x;return Number.isInteger(stairDirs[i])?stairDirs[i]:autoStairDirection(x,y,stairTypes[i]||'up')}
+function stairAccess(x,y,nx,ny){
+ if(!stairAt(x,y))return false;
+ let i=y*N+x,kind=stairTypes[i]||'up',low=stairLowDirection(x,y),dx=nx-x,dy=ny-y;
+ let d=DIRS.findIndex(v=>v[0]===dx&&v[1]===dy);if(d<0)return false;
+ let a=heightAt(x,y),bb=heightAt(nx,ny);
+ return kind==='up'?d===low&&bb===a-1:d===(low+2)%4&&bb===a+1;
+}
+function elevation(x,y){return heightAt(Math.floor(x),Math.floor(y))}
+function canStep(ax,ay,bx,by){if(bx<0||by<0||bx>=N||by>=N||(ground(bx,by)==='water'&&!isBridge(bx,by))||(ground(ax,ay)==='water'&&!isBridge(ax,ay)))return false;let diff=Math.abs(heightAt(ax,ay)-heightAt(bx,by));return diff===0||(diff===1&&(stairAccess(ax,ay,bx,by)||stairAccess(bx,by,ax,ay)))}
+function makeExample(){
+ b=[];terrain=Array(N*N).fill('grass');heights=Array(N*N).fill(0);stairs=Array(N*N).fill(false);stairDirs=Array(N*N).fill(null);stairTypes=Array(N*N).fill(null);bridges=Array(N*N).fill(false);flag={x:12,y:13};
+ for(let y=0;y<N;y++)for(let x=0;x<N;x++){
+   let v=rnd(x*143+y*179),i=y*N+x;
+   if((x<=3&&y>=4&&y<=14)||(x>=22&&y>=2&&y<=10)||(x<=2&&y>=20&&y<=23))terrain[i]='water';
+   else if(v>.93)terrain[i]='dirt';
+   if(x>=7&&x<=17&&y>=7&&y<=17)heights[i]=1;
+   if(x>=3&&x<=6&&y>=6&&y<=12){heights[i]=x<=4?2:3;terrain[i]='rock'}
+   if(x>=19&&x<=21&&y>=8&&y<=12){heights[i]=y<11?3:2;terrain[i]='rock'}
+ }
+ for(let x=7;x<=17;x++){b.push(obj('wall',x,7));b.push(obj('wall',x,17))}
+ for(let y=8;y<=16;y++){b.push(obj('wall',7,y));b.push(obj('wall',17,y))}
+ b=b.filter(o=>!(o.type==='wall'&&o.x===12&&o.y===17));
+ [[7,7],[17,7],[7,17],[17,17]].forEach(p=>b.push(obj('tower',...p)));
+ b.push(obj('gate',12,17),obj('keep',12,10),obj('house',9,10),obj('house',15,13),obj('barracks',15,9),obj('house',9,14));
+ // The ramp and gateway are the single natural entrance to a defensible terrace.
+ heights[18*N+12]=1;stairs[18*N+12]=true;terrain[18*N+12]='stairs';stairDirs[18*N+12]=2;stairTypes[18*N+12]='up';
+ for(let y=18;y<N;y++)terrain[y*N+12]=y===18?'stairs':'road';
+ // A second crossing to demonstrate a passable timber bridge over the moat.
+ for(let x=2;x<=8;x++){terrain[20*N+x]='water';heights[20*N+x]=0}
+ for(let x=2;x<=8;x++){bridges[20*N+x]=true}
+ for(let y=11;y<=13;y++)terrain[y*N+12]='road';
+ [[4,16],[4,3],[20,17],[22,20],[4,22],[19,3],[2,2],[20,2],[19,22],[5,17],[21,14],[5,5]].forEach(([x,y],i)=>{if(ground(x,y)!=='water'&&heightAt(x,y)<2)b.push(obj(i%3===0?'oak':'tree',x,y))});
+ [[9,20],[10,20],[18,6],[18,7],[21,18],[6,21],[16,20]].forEach(([x,y])=>{if(ground(x,y)!=='water'&&!findAll(x,y))b.push(obj('bush',x,y))});
+ selected='wall';rot=0;zoom=1;
+}
+function snapshot(){return JSON.stringify({version:32,b:b.map(({built,cooldown,...o})=>o),terrain,heights,stairs,stairDirs,stairTypes,bridges,rot,zoom,selected,flag,troops:{attackers:clamp(Number($('attackersCount').value)||8,1,60),defenders:clamp(Number($('defendersCount').value)||0,0,24)}})}
+function loadSnap(s){
+ let d=typeof s==='string'?JSON.parse(s):s;
+ if(!d||!Array.isArray(d.b)||!Array.isArray(d.terrain))throw Error('Invalid castle data');
+ let oldN=Math.sqrt(d.terrain.length);if(![14,20,25].includes(oldN))throw Error('Expected a 14×14, 20×20 or 25×25 map');
+ let of=Math.floor((N-oldN)/2),src=d.terrain;
+ let t=Array(N*N).fill('grass'),h=Array(N*N).fill(0),st=Array(N*N).fill(false),sd=Array(N*N).fill(null),sk=Array(N*N).fill(null),br=Array(N*N).fill(false);
+ for(let y=0;y<oldN;y++)for(let x=0;x<oldN;x++){let srcI=y*oldN+x,dstI=(y+of)*N+x+of;t[dstI]=src[srcI];h[dstI]=Array.isArray(d.heights)?clamp(Number(d.heights[srcI])||0,0,4):0;st[dstI]=Array.isArray(d.stairs)?!!d.stairs[srcI]:false;sd[dstI]=Array.isArray(d.stairDirs)&&Number.isInteger(d.stairDirs[srcI])&&d.stairDirs[srcI]>=0&&d.stairDirs[srcI]<=3?d.stairDirs[srcI]:null;sk[dstI]=Array.isArray(d.stairTypes)&&['up','down'].includes(d.stairTypes[srcI])?d.stairTypes[srcI]:null;br[dstI]=Array.isArray(d.bridges)?!!d.bridges[srcI]:false}
+ let occupied=new Set();
+ b=d.b.filter(o=>defs[o.type]&&!['flag','road','water','erase','raise','lower','rock','stairsUp','stairsDown','bridge'].includes(o.type)&&Number.isInteger(o.x)&&o.x>=0&&o.x<oldN&&Number.isInteger(o.y)&&o.y>=0&&o.y<oldN).slice(0,625).filter(o=>{let id=o.x+','+o.y;if(occupied.has(id))return false;occupied.add(id);return true}).map(o=>({type:o.type,x:o.x+of,y:o.y+of,hp:clamp(Number.isFinite(Number(o.hp))?Number(o.hp):defs[o.type].hp,0,defs[o.type].hp),max:defs[o.type].hp,built:1}));
+ terrain=t.map((v,i)=>['grass','dirt','road','water','rock','stairs'].includes(v)?v:'grass');heights=h.map(v=>Math.round(v));stairs=st;stairDirs=sd;stairTypes=sk;bridges=br;for(let y=0;y<N;y++)for(let x=0;x<N;x++)if(stairAt(x,y)){let i=y*N+x;if(!stairTypes[i])stairTypes[i]=DIRS.some(([dx,dy])=>heightAt(x+dx,y+dy)<heightAt(x,y))?'up':'down';if(stairDirs[i]==null)stairDirs[i]=autoStairDirection(x,y,stairTypes[i])}
+ rot=((+d.rot||0)%4+4)%4;zoom=clamp(+d.zoom||1,.65,1.23);selected=defs[d.selected]?d.selected:'wall';
+ flag=d.flag&&Number.isInteger(d.flag.x)&&Number.isInteger(d.flag.y)&&d.flag.x>=0&&d.flag.x<oldN&&d.flag.y>=0&&d.flag.y<oldN?{x:d.flag.x+of,y:d.flag.y+of}:findFlagSpot();
+ if(findAll(flag.x,flag.y)||(ground(flag.x,flag.y)==='water'&&!isBridge(flag.x,flag.y)))flag=findFlagSpot();
+ if(d.troops){if(Number.isFinite(Number(d.troops.attackers)))$('attackersCount').value=clamp(Number(d.troops.attackers)||8,1,60);if(Number.isFinite(Number(d.troops.defenders)))$('defendersCount').value=clamp(Number(d.troops.defenders)||0,0,24)}
+ setTool(selected);updateStats();
+}
+function findFlagSpot(){let keep=b.find(o=>o.type==='keep');let cx=keep?keep.x:Math.floor(N/2),cy=keep?keep.y:Math.floor(N/2);
+ let cells=[];for(let y=0;y<N;y++)for(let x=0;x<N;x++)if(!findAll(x,y)&&(ground(x,y)!=='water'||isBridge(x,y)))cells.push({x,y,d:Math.abs(cx-x)+Math.abs(cy-y)});
+ cells.sort((a,b)=>a.d-b.d);return cells.length?{x:cells[0].x,y:cells[0].y}:{x:12,y:12}}
+
+// Localized interface (Russian / English). All game data and IDs remain language-neutral.
+let lang=['ru','en','de'].includes(localStorage.getItem('castlecraft-language-v3'))?localStorage.getItem('castlecraft-language-v3'):'ru';
+const englishNames={wall:'Wall',tower:'Tower',gate:'Gate',keep:'Keep',house:'House',barracks:'Barracks',tree:'Fir tree',oak:'Oak tree',bush:'Bush',bridge:'Wooden bridge',road:'Road',water:'Water',erase:'Erase',flag:'Banner',raise:'Raise terrain',lower:'Lower terrain',rock:'Cliff / rock',stairsUp:'Stairs up',stairsDown:'Stairs down'};
+const englishDesc={wall:'Built stone by stone. Walls can be breached.',tower:'Archers fire from the top, with extra range on high ground.',gate:'A vulnerable entrance, usually targeted by siege weapons.',keep:'Central stronghold. Enemy victory still requires taking the banner.',house:'A little medieval home with a red roof.',barracks:'Houses a garrison and helps repel attackers.',tree:'A tall conifer.',oak:'A leafy tree with a broad crown.',bush:'A low flowering shrub.',bridge:'Place wooden planks across water. Soldiers can cross.',road:'Paved route for marching troops.',water:'Deep moat: blocks foot soldiers.',erase:'Remove a building and reset the terrain tile.',flag:'The battle ends only if invaders lower this banner and raise theirs.',raise:'Raise this tile by one height level (max 4).',lower:'Lower this tile by one level (min 0).',rock:'Build a high rocky cliff; steep walls block soldiers.',stairsUp:'Raise a tile and add a staircase. Infantry can cross a 1-level difference.',stairsDown:'Lower a tile and add a staircase. Infantry can cross a 1-level difference.'};
+const germanNames={wall:'Mauer',tower:'Turm',gate:'Tor',keep:'Bergfried',house:'Haus',barracks:'Kaserne',tree:'Tanne',oak:'Laubbaum',bush:'Busch',bridge:'Holzbrücke',road:'Weg',water:'Wasser',erase:'Entfernen',flag:'Banner',raise:'Anheben',lower:'Absenken',rock:'Felsen',stairsUp:'Treppe aufwärts',stairsDown:'Treppe abwärts'};
+const germanDesc={wall:'Stein für Stein errichtete Mauer. Kann durch Beschuss zerstört werden.',tower:'Wehrturm mit Bogenschützen. Erhöhte Positionen vergrößern die Reichweite.',gate:'Verwundbarer Zugang zum Burghof und bevorzugtes Ziel der Belagerungsmaschinen.',keep:'Hauptturm der Burg. Der Angreifer muss dennoch das Banner erobern.',house:'Mittelalterliches Haus mit rotem Ziegeldach.',barracks:'Unterkunft der Wachen, die den Angriff abwehren.',tree:'Hoher Nadelbaum.',oak:'Baum mit breiter, dichter Krone.',bush:'Kleiner blühender Strauch.',bridge:'Begehbare Holzbrücke über Wasser und Gräben.',road:'Befestigter Weg für Soldaten.',water:'Wassergraben, für Fußsoldaten unpassierbar.',erase:'Gebäude entfernen und Gelände zurücksetzen.',flag:'Die Angreifer gewinnen erst, wenn sie dieses Banner austauschen.',raise:'Geländefeld um eine Stufe erhöhen (maximal 4).',lower:'Geländefeld um eine Stufe absenken (minimal 0).',rock:'Hohen Felsen mit steilen, schwer überwindbaren Flanken errichten.',stairsUp:'Feld anheben und eine räumliche Steintreppe bauen. Richtung kann eingestellt werden.',stairsDown:'Feld absenken und eine Treppe zum höheren Nachbarfeld errichten.'};
+const dynDE={
+ 'СОХРАНЕНО':'GESPEICHERT','СОХРАНИ В ФАЙЛ':'ALS DATEI SPEICHERN','Инструмент: ':'Werkzeug: ','Клетка ':'Feld ','Tile ':'Feld ',
+ 'Высота: ':'Höhe: ','Высота: —':'Höhe: —','За пределами острова':'Außerhalb der Insel',
+ 'Позиция: ':'Position: ','ур.':'St.','Наведи курсор на постройку.':'Mit der Maus ein Gebäude untersuchen.',
+ 'Ландшафт':'Gelände','Для знамени выбери свободную сухую клетку':'Wähle ein freies, trockenes Feld für das Banner.',
+ 'Знамя перенесено':'Banner verschoben','Нельзя изменить высоту под водой':'Unter Wasser kann die Höhe nicht verändert werden.',
+ 'Нельзя затопить флаговую точку':'Das Banner darf nicht geflutet werden.',
+ 'Перенеси знамя перед строительством на этой клетке':'Verschiebe zuerst das Banner.',
+ '⚑ ЦЕЛЬ ОСАДЫ':'⚑ BELAGERUNGSZIEL','⚑ ЗНАМЯ':'⚑ BANNER',
+ '⚔ НАЧАТЬ ОСАДУ':'⚔ BELAGERUNG STARTEN','↻ ПОВТОРИТЬ ОСАДУ':'↻ BELAGERUNG WIEDERHOLEN',
+ 'СВОБОДНОЕ СТРОИТЕЛЬСТВО':'FREIES BAUEN','Долина Каменных Башен':'Tal der Steintürme',
+ 'Остров 25 × 25 · поверни камеру, чтобы осмотреть замок':'25 × 25 Insel · Ansicht drehen, um die Burg zu erkunden',
+ '⚒ РЕЖИМ СТРОИТЕЛЬСТВА':'⚒ BAUMODUS','Твоя крепость':'Deine Festung',
+ 'Небольшой гарнизон. Большие амбиции.':'Kleine Garnison. Große Pläne.',
+ 'СРАЖЕНИЕ В РЕАЛЬНОМ ВРЕМЕНИ':'BELAGERUNG IN ECHTZEIT','Осада крепости':'Die Burg wird belagert',
+ 'Большой и малый требушеты · осада высот · захват знамени':'Großer & kleiner Tribock · Höhenvorteil · Banner erobern',
+ '⚔ ИДЁТ ШТУРМ':'⚔ BELAGERUNG LÄUFT','Военная хроника':'Schlachtbericht',
+ 'Для победы врагу необходимо сменить флаг':'Angreifer müssen das Banner austauschen',
+ 'Цель: захватить знамя':'Ziel: Banner erobern',
+ 'Стража у флага: ':'Bannerwache: ',
+ 'Синий флаг поднят':'Blaues Banner weht','Снимают синий флаг':'Blaues Banner wird gesenkt',
+ 'Поднимают красный флаг':'Rotes Banner wird gehisst','Знамя атакующих поднято':'Banner der Angreifer gehisst',
+ '▶ Продолжить':'▶ Fortsetzen','Ⅱ Пауза':'Ⅱ Pause',
+ 'Карта экспортирована в JSON':'Karte als JSON exportiert','Замок успешно загружен':'Burg erfolgreich geladen',
+ 'Ошибка: файл карты не распознан':'Fehler: ungültige Kartendatei',
+ 'Сначала вернись к строительству':'Bitte zuerst zum Baumodus zurückkehren',
+ 'Нет действий для отмены':'Keine Aktionen zum Rückgängigmachen','Последнее действие отменено':'Letzte Aktion rückgängig gemacht',
+ 'Удалить все постройки и ландшафт?':'Alle Bauwerke und Geländedaten löschen?',
+ 'Пустой остров готов':'Leere Insel erstellt',
+ 'Загрузить демонстрационный замок? Текущая карта будет заменена.':'Beispielburg laden? Die aktuelle Karte wird ersetzt.',
+ 'Пример замка восстановлен':'Beispielburg wiederhergestellt',
+ 'Во время осады чинить нельзя':'Während der Belagerung sind keine Reparaturen möglich',
+ 'Все постройки восстановлены':'Alle Gebäude repariert',
+ 'Осада приостановлена':'Belagerung angehalten','Штурм продолжается':'Belagerung fortgesetzt',
+ 'Восстановлена сохранённая крепость':'Gespeicherte Burg wiederhergestellt',
+ 'Стража у флага:':'Bannerwache:',
+ 'КРЕПОСТЬ ВЫСТОЯЛА!':'DIE BURG HAT STANDGEHALTEN!',
+ 'ЗНАМЯ ЗАХВАЧЕНО!':'BANNER EROBERT!',
+ 'ПОБЕДА ЗАЩИТНИКОВ':'SIEG DER VERTEIDIGER',
+ 'ПОБЕДА АТАКУЮЩИХ':'SIEG DER ANGREIFER',
+ 'Знамя':'Banner'
+};
+function tr(ru,en,de){return lang==='ru'?ru:lang==='en'?en:(de||dynDE[ru]||dynDE[en]||en)}
+function itemName(t){return lang==='ru'?defs[t].name:lang==='en'?(englishNames[t]||t):(germanNames[t]||t)}
+function itemDesc(t){return lang==='ru'?defs[t].desc:lang==='en'?(englishDesc[t]||''):(germanDesc[t]||'')}
+const staticEN={
+ '⚒ СТРОИТЕЛЬСТВО':'⚒ BUILD', '⚔ ШТУРМ ЗАМКА':'⚔ SIEGE','АВТОСОХРАНЕНИЕ':'AUTOSAVE','⇩ Сохранить файл':'⇩ Export map','⇧ Загрузить':'⇧ Import',
+ 'МАСТЕРСКАЯ':'WORKSHOP','Построй королевство':'Build your kingdom','Размещай постройки на острове, укрепляй стены и проверь оборону боем.':'Place buildings, fortify your island, and test it in battle.',
+ 'ПОСТРОЙКИ':'BUILDINGS & TERRAIN','⚔ НАЧАТЬ ОСАДУ':'⚔ START SIEGE','↶ Отменить':'↶ Undo','Очистить':'Clear','Образец':'Demo castle','✦ Починить':'✦ Repair',
+ 'СВОБОДНОЕ СТРОИТЕЛЬСТВО':'FREE BUILD','Долина Каменных Башен':'Valley of Stone Towers','Остров 25 × 25 · поверни камеру, чтобы осмотреть замок':'25 × 25 island · rotate the view to inspect your castle',
+ '🏰 Твой замок уже построен!':'🏰 Your demo castle is ready!','Кликни по клетке, чтобы построить секцию — камни соберутся на глазах. Поставь флаг инструментом «Знамя»: враг победит только после его захвата.':'Click a tile to build stone by stone. Move the banner using the Banner tool: the invaders must capture it to win.',
+ '⚒ РЕЖИМ СТРОИТЕЛЬСТВА':'⚒ BUILD MODE','Клетка —':'Tile —','Высота: —':'Elevation: —','Выбрано: Стена':'Selected: Wall',
+ 'Осада окончена':'Siege finished','↻ ПОВТОРИТЬ ОСАДУ':'↻ RETRY SIEGE','Вернуться в мастерскую':'Return to workshop','ОБЗОР КОРОЛЕВСТВА':'KINGDOM OVERVIEW',
+ 'Твоя крепость':'Your castle','Небольшой гарнизон. Большие амбиции.':'A small garrison. Grand ambitions.','ПОСТРОЕК':'BUILDINGS','УКРЕПЛЕНИЙ':'WALLS','БАШЕН':'TOWERS','ПРОЧНОСТЬ':'INTEGRITY',
+ 'ИНСПЕКТОР ПОСТРОЙКИ':'INSPECTOR','Прочность':'Health','Наведи на постройку, чтобы осмотреть её.':'Hover over a building to inspect it.',
+ 'ПЛАН ОБОРОНЫ':'DEFENSE PLAN','Башни стреляют по атакующим. Ворота и стены задерживают солдат. Баллисты и требушеты разбивают укрепления. Холмы и обрывы преграждают путь, а лестницы открывают проход. Победа только после смены знамени.':'Towers fire at invaders. Walls and gates delay troops. Two trebuchets smash fortifications. Cliffs block infantry until you build stairs. Victory requires capturing the banner.',
+ 'ИДЁТ ОСАДА':'SIEGE IN PROGRESS','ПОБЕЖДЕНО':'DEFEATED','НАСТУПАЮЩИХ':'ATTACKERS','Войска введены в бой':'Troops deployed','ЗАХВАТ ЗНАМЕНИ':'BANNER CAPTURE','Синий флаг поднят':'Blue banner flying','Стража у флага: 4 / 4':'Banner guards: 4 / 4',
+ 'Ⅱ Пауза':'Ⅱ Pause','↻ Повторить штурм':'↻ Restart siege','← Вернуться к строительству':'← Return to building','ХРОНИКА БОЯ':'BATTLE LOG','НАСТРОЙКИ ОСАДЫ':'SIEGE SETTINGS',
+ 'Лёгкая · небольшой отряд':'Easy · small force','Обычная · два требушета':'Normal · two trebuchets','Тяжёлая · большая армия':'Hard · large army','Пыль, осколки и обломки':'Dust, stone chips & rubble','Защитники':'Defenders','Атакующие':'Invaders',
+ 'CASTLECRAFT · БРАУЗЕРНЫЙ ПРОТОТИП · ОФЛАЙН · 25×25 · V3.2':'CASTLECRAFT · BROWSER PROTOTYPE · OFFLINE · 25×25 · V3.2','Автосохранение в этом браузере · экспорт/импорт JSON для резервной копии':'Auto-save in this browser · JSON export/import for backup',
+ 'Управление:':'Controls:','ЛКМ — строить · перетаскивание — рисовать ·':'Left click to build · drag to paint ·','— поворот · колесо — масштаб ·':'— rotate · scroll to zoom ·','— инструменты ·':'— tools ·','— знамя.':'— banner.'
+};
+const staticDE={"⚒ СТРОИТЕЛЬСТВО":"⚒ BAUEN","⚔ ШТУРМ ЗАМКА":"⚔ BELAGERUNG","АВТОСОХРАНЕНИЕ":"AUTOSPEICHERN","⇩ Сохранить файл":"⇩ Exportieren","⇧ Загрузить":"⇧ Importieren","МАСТЕРСКАЯ":"BAUWERKSTATT","Построй королевство":"Baue dein Königreich","Размещай постройки на острове, укрепляй стены и проверь оборону боем.":"Errichte Gebäude, befestige Mauern und erprobe die Verteidigung im Kampf.","ПОСТРОЙКИ":"BAUWERKE & GELÄNDE","⚔ НАЧАТЬ ОСАДУ":"⚔ BELAGERUNG STARTEN","↶ Отменить":"↶ Rückgängig","Очистить":"Löschen","Образец":"Beispiel","✦ Починить":"✦ Reparieren","СВОБОДНОЕ СТРОИТЕЛЬСТВО":"FREIES BAUEN","Долина Каменных Башен":"Tal der Steintürme","Остров 25 × 25 · поверни камеру, чтобы осмотреть замок":"25 × 25 Insel · Ansicht drehen, um die Burg zu erkunden","🏰 Твой замок уже построен!":"🏰 Deine Burg steht bereit!","Кликни по клетке, чтобы построить секцию — камни соберутся на глазах. Поставь флаг инструментом «Знамя»: враг победит только после его захвата.":"Klicke auf ein Feld, um Stein für Stein zu bauen. Das Banner bestimmt den Sieg: Angreifer müssen es erobern.","⚒ РЕЖИМ СТРОИТЕЛЬСТВА":"⚒ BAUMODUS","Клетка —":"Feld —","Высота: —":"Höhe: —","Выбрано: Стена":"Ausgewählt: Mauer","Осада окончена":"Belagerung beendet","↻ ПОВТОРИТЬ ОСАДУ":"↻ ERNEUT BELAGERN","Вернуться в мастерскую":"Zurück zur Bauwerkstatt","ОБЗОР КОРОЛЕВСТВА":"KÖNIGREICH IM ÜBERBLICK","Твоя крепость":"Deine Festung","Небольшой гарнизон. Большие амбиции.":"Kleine Garnison. Große Pläne.","ПОСТРОЕК":"GEBÄUDE","УКРЕПЛЕНИЙ":"MAUERN","БАШЕН":"TÜRME","ПРОЧНОСТЬ":"ZUSTAND","ИНСПЕКТОР ПОСТРОЙКИ":"BAUWERK PRÜFEN","Прочность":"Haltbarkeit","Наведи на постройку, чтобы осмотреть её.":"Bewege die Maus über ein Gebäude.","ПЛАН ОБОРОНЫ":"VERTEIDIGUNGSPLAN","Башни стреляют по атакующим. Ворота и стены задерживают солдат. Баллисты и требушеты разбивают укрепления. Холмы и обрывы преграждают путь, а лестницы открывают проход. Победа только после смены знамени.":"Türme beschießen Angreifer. Mauern und Tore halten Truppen auf. Zwei Triböcke zerstören Befestigungen. Felsen versperren Wege; Treppen erschließen Höhen. Erst der Bannerwechsel bringt den Sieg.","ИДЁТ ОСАДА":"BELAGERUNG LÄUFT","ПОБЕЖДЕНО":"BESIEGT","НАСТУПАЮЩИХ":"ANGREIFER","Войска введены в бой":"Eingesetzte Truppen","ЗАХВАТ ЗНАМЕНИ":"BANNER EROBERN","Синий флаг поднят":"Blaues Banner weht","Стража у флага: 3 / 3":"Bannerwache: 4 / 4","Ⅱ Пауза":"Ⅱ Pause","↻ Повторить штурм":"↻ Angriff wiederholen","← Вернуться к строительству":"← Zurück zum Bauen","ХРОНИКА БОЯ":"SCHLACHTPROTOKOLL","НАСТРОЙКИ ОСАДЫ":"BELAGERUNGSEINSTELLUNGEN","Лёгкая · небольшой отряд":"Leicht · kleine Truppe","Обычная · баллисты и требушеты":"Normal · zwei Triböcke","Тяжёлая · большая армия":"Schwer · große Armee","Пыль, осколки и обломки":"Staub, Splitter & Trümmer","Защитники":"Verteidiger","Атакующие":"Angreifer","CASTLECRAFT · БРАУЗЕРНЫЙ ПРОТОТИП · ОФЛАЙН · 25×25 · V3.2":"CASTLECRAFT · BROWSER-PROTOTYP · OFFLINE · 25×25 · V3.2","Автосохранение в этом браузере · экспорт/импорт JSON для резервной копии":"Automatische Speicherung im Browser · JSON-Import/Export als Sicherung","Управление:":"Steuerung:","ЛКМ — строить · перетаскивание — рисовать ·":"Linksklick — bauen · Ziehen — malen ·","— поворот · колесо — масштаб ·":"— drehen · Mausrad — zoomen ·","— инструменты ·":"— Werkzeuge ·","— знамя.":"— Banner.","Направление лестницы":"Treppenrichtung","Автоматически":"Automatisch","Север ↑":"Norden ↑","Восток →":"Osten →","Юг ↓":"Süden ↓","Запад ←":"Westen ←","Направление указывает на нижнюю сторону подъёма.":"Die Richtung zeigt zur unteren Seite der Treppe."};
+Object.assign(staticEN,{
+ 'ЧИСЛЕННОСТЬ ВОЙСК':'TROOP COUNTS','Атакующие солдаты':'Attacking soldiers','Защитники крепости':'Castle defenders',
+ '⚒ 1 большой требушет — мощный, неточный. 1 малый — точный, но слабее.':'⚒ 1 heavy trebuchet: powerful, inaccurate. 1 light trebuchet: precise, weaker.',
+ 'Лёгкая · небольшой отряд':'Easy · reduced damage','Обычная · два требушета':'Normal · two trebuchets','Тяжёлая · большая армия':'Hard · stronger troops'
+});
+Object.assign(staticDE,{
+ 'ЧИСЛЕННОСТЬ ВОЙСК':'TRUPPENSTÄRKE','Атакующие солдаты':'Angreifende Soldaten','Защитники крепости':'Burgverteidiger',
+ '⚒ 1 большой требушет — мощный, неточный. 1 малый — точный, но слабее.':'⚒ 1 großer Tribock: stark, ungenau. 1 kleiner: präzise, schwächer.',
+ 'Лёгкая · небольшой отряд':'Leicht · geringerer Schaden','Обычная · два требушета':'Normal · zwei Triböcke','Тяжёлая · большая армия':'Schwer · stärkere Truppen'
+});
+const staticNodes=[];
+function initializeTextNodes(){
+ const root=document.querySelector('.app');const walker=document.createTreeWalker(root,NodeFilter.SHOW_TEXT);let node;
+ while(node=walker.nextNode()){
+  if(!node.parentElement || ['SCRIPT','STYLE'].includes(node.parentElement.tagName))continue;
+  if(node.textContent.trim())staticNodes.push({node,original:node.textContent});
+ }
+}
+function applyStaticText(){
+ for(let {node,original} of staticNodes){let content=original.trim();if(staticEN[content]||staticDE[content])node.textContent=lang==='en'&&staticEN[content]?original.replace(content,staticEN[content]):lang==='de'&&staticDE[content]?original.replace(content,staticDE[content]):original}
+ for(let el of document.querySelectorAll('.tool')){let t=el.dataset.tool;el.querySelector('.label').textContent=itemName(t)}
+ $('langRU').classList.toggle('active',lang==='ru');$('langEN').classList.toggle('active',lang==='en');$('langDE').classList.toggle('active',lang==='de');document.documentElement.lang=lang;
+}
+function updateLanguage(){
+ applyStaticText();
+ const stairLabels=lang==='de'?['Automatisch','Norden ↑','Osten →','Süden ↓','Westen ←']:lang==='en'?['Automatic','North ↑','East →','South ↓','West ←']:['Автоматически','Север ↑','Восток →','Юг ↓','Запад ←'];
+ $('stairDirectionLabel').textContent=tr('Направление лестницы','Staircase direction','Treppenrichtung');
+ $('saveInfo').textContent=tr('СОХРАНЕНО','SAVED','GESPEICHERT')+' · '+new Date().toLocaleTimeString(lang==='ru'?'ru-RU':lang==='de'?'de-DE':'en-US',{hour:'2-digit',minute:'2-digit'});
+ $('stairInfo').textContent=tr('Стрелка показывает нижнюю сторону лестницы.','Arrow points to the low end of the staircase.','Der Pfeil zeigt zur unteren Seite der Treppe.');
+ [...$('stairFacing').options].forEach((opt,i)=>opt.textContent=stairLabels[i]);
+ if(phase==='build'){
+  $('attackMain').textContent=tr('⚔ НАЧАТЬ ОСАДУ','⚔ START SIEGE');$('sceneEyebrow').textContent=tr('СВОБОДНОЕ СТРОИТЕЛЬСТВО','FREE BUILD');
+  $('sceneTitle').textContent=tr('Долина Каменных Башен','Valley of Stone Towers');$('sceneSub').textContent=tr('Остров 25 × 25 · поверни камеру, чтобы осмотреть замок','25 × 25 island · rotate to inspect your castle');
+  $('modePill').textContent=tr('⚒ РЕЖИМ СТРОИТЕЛЬСТВА','⚒ BUILD MODE');$('rightTitle').textContent=tr('Твоя крепость','Your castle');$('rightSubtitle').textContent=tr('Небольшой гарнизон. Большие амбиции.','A small garrison. Grand ambitions.');
+  setTool(selected);
+ }else{
+  $('attackMain').textContent=tr('↻ ПОВТОРИТЬ ОСАДУ','↻ RESTART SIEGE');$('sceneEyebrow').textContent=tr('СРАЖЕНИЕ В РЕАЛЬНОМ ВРЕМЕНИ','REAL-TIME SIEGE');$('sceneTitle').textContent=tr('Осада крепости','Castle under siege');
+  $('sceneSub').textContent=tr('Большой и малый требушеты · осада высот · захват знамени','Heavy & light trebuchets · high ground · capture the banner');
+  $('modePill').textContent=tr('⚔ ИДЁТ ШТУРМ','⚔ SIEGE IN PROGRESS');$('rightTitle').textContent=tr('Военная хроника','Battle chronicle');$('rightSubtitle').textContent=tr('Для победы врагу необходимо сменить флаг','Attackers must replace the defending banner to win');
+  $('selectedPill').textContent=tr('Цель: захватить знамя','Objective: capture the banner');updateBattleUI();
+ }
+ updateInspector();redrawFeed();
+}
+$('langRU').onclick=()=>{lang='ru';localStorage.setItem('castlecraft-language-v3',lang);updateLanguage()};
+$('langEN').onclick=()=>{lang='en';localStorage.setItem('castlecraft-language-v3',lang);updateLanguage()};
+$('langDE').onclick=()=>{lang='de';localStorage.setItem('castlecraft-language-v3',lang);updateLanguage()};
+try{const settings=JSON.parse(localStorage.getItem('castlecraft-troops')||'{}');if(settings.attackers!==undefined)$('attackersCount').value=clamp(Number(settings.attackers)||8,1,60);if(settings.defenders!==undefined)$('defendersCount').value=clamp(Number(settings.defenders)||0,0,24)}catch(e){}
+for(const id of ['attackersCount','defendersCount'])$(id).addEventListener('change',()=>{const attackers=clamp(parseInt($('attackersCount').value)||8,1,60),defenders=clamp(Number($('defendersCount').value)||0,0,24);$('attackersCount').value=attackers;$('defendersCount').value=defenders;localStorage.setItem('castlecraft-troops',JSON.stringify({attackers,defenders}));persist();});
+function persist(){try{localStorage.setItem(SAVEKEY,phase==='siege'&&blueprint?blueprint:snapshot());$('saveInfo').textContent=tr('СОХРАНЕНО','SAVED')+' · '+new Date().toLocaleTimeString(lang==='ru'?'ru-RU':lang==='de'?'de-DE':'en-US',{hour:'2-digit',minute:'2-digit'});dirty=false;}catch(e){$('saveInfo').textContent=tr('СОХРАНИ В ФАЙЛ','SAVE TO FILE');}}
+function mark(){dirty=true;updateStats();persist()}
+function remember(){history.push(snapshot());if(history.length>50)history.shift()}
+function notify(str){const el=$('toast');el.textContent=str;el.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>el.classList.remove('show'),2300)}
+function setTool(t){if(phase!=='build')return;selected=t;$('stairDirectionBar').style.display=t==='stairsUp'||t==='stairsDown'?'flex':'none';for(let el of document.querySelectorAll('.tool'))el.classList.toggle('selected',el.dataset.tool===t);$('selectedPill').textContent=tr('Инструмент: ','Tool: ')+itemName(t);$('toolHint').innerHTML='<strong>'+itemName(t)+'</strong> — '+itemDesc(t);updateInspector()}
+function buildToolButtons(){const root=$('tools');toolList.forEach((t,i)=>{let el=document.createElement('button');el.className='tool';el.dataset.tool=t;el.innerHTML=`<span class="pic">${defs[t].icon}</span><span class="label">${itemName(t)}</span><span class="key">${i<9?i+1:i===toolList.length-1?'F':''}</span>`;el.addEventListener('click',()=>setTool(t));root.appendChild(el)});setTool(selected)}
+function place(x,y,tool){
+ if(x<0||y<0||x>=N||y>=N)return false;
+ let old=findAll(x,y),oldGround=ground(x,y),i=y*N+x;
+ if(tool==='flag'){
+   if(old || (oldGround==='water'&&!bridges[i])){notify(tr('Для знамени выбери свободную сухую клетку','Choose a dry, empty tile for the banner'));return false}
+   if(flag.x===x&&flag.y===y)return false;flag={x,y};notify(tr('Знамя перенесено','Banner moved'));return true;
+ }
+ if(tool==='bridge'){
+   if(old){notify(tr('Сначала убери постройку','Remove the building first','Entferne zuerst das Bauwerk'));return false}
+   if(bridges[i])return false;bridges[i]=true;return true;
+ }
+ if(['raise','lower','rock','stairsUp','stairsDown'].includes(tool)){
+   if(oldGround==='water'){notify(tr('Нельзя изменить высоту под водой','Cannot terraform underwater'));return false}
+   let before=heights[i],next=before;
+   if(tool==='raise'||tool==='stairsUp')next=clamp(before+1,0,4);
+   if(tool==='lower'||tool==='stairsDown')next=clamp(before-1,0,4);
+   if(tool==='rock'){next=Math.max(2,before+1);next=clamp(next,0,4)}
+   if(next===before && ((tool==='stairsUp'||tool==='stairsDown')?stairs[i]:true))return false;
+   heights[i]=next;
+   if(tool==='stairsUp'||tool==='stairsDown'){
+    stairs[i]=true;terrain[i]='stairs';stairTypes[i]=tool==='stairsUp'?'up':'down';
+    let facing=$('stairFacing').value;
+    stairDirs[i]=facing==='auto'?autoStairDirection(x,y,stairTypes[i]):Number(facing);
+   }
+   else if(tool==='rock'){stairs[i]=false;stairDirs[i]=null;stairTypes[i]=null;terrain[i]='rock'}
+   else if(terrain[i]==='stairs'){stairs[i]=false;stairDirs[i]=null;stairTypes[i]=null;terrain[i]='grass'}
+   return true;
+ }
+ if(tool==='erase'){
+  if(!old&&oldGround==='grass'&&!heights[i]&&!stairs[i]&&!bridges[i])return false;
+  b=b.filter(o=>o!==old);if(bridges[i]){bridges[i]=false;return true}terrain[i]='grass';heights[i]=0;stairs[i]=false;stairDirs[i]=null;stairTypes[i]=null;
+  if(flag.x===x&&flag.y===y)flag=findFlagSpot();return true;
+ }
+ if(tool==='road'||tool==='water'){
+  if(flag.x===x&&flag.y===y&&tool==='water'){notify(tr('Нельзя затопить флаговую точку','Cannot flood the banner'));return false}
+  if(!old&&oldGround===tool)return false;
+  b=b.filter(o=>o!==old);terrain[i]=tool;bridges[i]=false;if(tool==='water'){heights[i]=0;stairs[i]=false;stairDirs[i]=null;stairTypes[i]=null}return true;
+ }
+ if(flag.x===x&&flag.y===y){notify(tr('Перенеси знамя перед строительством на этой клетке','Move the banner before building on this tile'));return false}
+ if(old&&old.type===tool)return false;
+ b=b.filter(o=>o!==old&&(tool!=='keep'||o.type!=='keep'));
+ if(oldGround==='water')terrain[i]='grass';bridges[i]=false;
+ if(oldGround==='stairs'){stairs[i]=false;stairDirs[i]=null;stairTypes[i]=null;terrain[i]='grass'}
+ let n=obj(tool,x,y);n.built=0;b.push(n);return true;
+}
+function doPaint(x,y){const key=x+','+y+','+selected;if(lastPaint===key)return;lastPaint=key;let valid=Number.isInteger(x)&&x>=0&&x<N&&Number.isInteger(y)&&y>=0&&y<N;if(valid){if(place(x,y,selected)){mark();$('tutorial').style.display='none'}}}
+function stats(){let relevant=b.filter(o=>!['tree','oak','bush'].includes(o.type));let alive=relevant.filter(o=>o.hp>0);let st=alive.filter(o=>o.type==='wall'||o.type==='gate');let tw=alive.filter(o=>o.type==='tower');let max=relevant.reduce((a,o)=>a+o.max,0);return {total:alive.length,walls:st.length,towers:tw.length,def:max?Math.round(relevant.reduce((a,o)=>a+o.hp,0)/max*100):0}}
+function updateStats(){let s=stats();$('statBuild').textContent=s.total;$('statWalls').textContent=s.walls;$('statTowers').textContent=s.towers;$('statDefense').textContent=s.def+'%';updateInspector()}
+function updateInspector(){let obj2=hover&&findAll(hover.x,hover.y),d=obj2?defs[obj2.type]:defs[selected];$('inspectName').textContent=obj2?itemName(obj2.type):itemName(selected);$('inspectIcon').textContent=d.icon;$('inspectDesc').textContent=obj2?itemDesc(obj2.type):itemDesc(selected);let hp=obj2?obj2.hp:d.hp,max=obj2?obj2.max:d.hp;$('inspectHP').textContent=max?Math.ceil(hp)+' / '+max:tr('Ландшафт','Terrain');$('inspectBar').style.width=max?Math.max(0,100*hp/max)+'%':'100%';$('inspectBar').style.background=max&&hp/max<.35?'#e47d64':'#91bc81';$('inspectCoords').textContent=obj2?`${tr('Позиция: ','Position: ')}${obj2.x+1} × ${obj2.y+1} · ${tr('ур.','lv.')}${heightAt(obj2.x,obj2.y)}`:(hover?`${tr('Клетка ','Tile ')}${hover.x+1} × ${hover.y+1} · ${tr('ур.','lv.')}${heightAt(hover.x,hover.y)}`:tr('Наведи курсор на постройку.','Hover over a structure.'))}
+// Projection, polygon drawing and simple procedural textures.
+let renderBase=0;
+function P(x,y,z=0){let a=x-N/2,c=y-N/2;let rx,ry;if(rot===0){rx=a;ry=c}else if(rot===1){rx=-c;ry=a}else if(rot===2){rx=-a;ry=-c}else{rx=c;ry=-a}return [W/2+(rx-ry)*SX*zoom,350+(rx+ry)*SY*zoom-(z+renderBase)*SZ*zoom]}
+function dist(x,y){return P(x,y)[1]}
+function poly(pts,fill,stroke='#493a2c',line=.85,hit=null){g.beginPath();pts.forEach((p,i)=>i?g.lineTo(Math.round(p[0]),Math.round(p[1])):g.moveTo(Math.round(p[0]),Math.round(p[1])));g.closePath();g.fillStyle=fill;g.fill();if(stroke){g.strokeStyle=stroke;g.lineWidth=line;g.stroke()}if(hit)hits.push({pts,hit})}
+function line(a,c,col='#332c25',width=1){g.beginPath();g.moveTo(Math.round(a[0]),Math.round(a[1]));g.lineTo(Math.round(c[0]),Math.round(c[1]));g.lineWidth=width;g.strokeStyle=col;g.stroke()}
+function rect(sx,sy,w,h,c){g.fillStyle=c;g.fillRect(Math.round(sx),Math.round(sy),Math.round(w),Math.round(h))}
+function shapePts(coords){return coords.map(o=>P(...o))}
+function shadow(x,y,r=.55){let p=P(x,y,.005);g.save();g.translate(p[0],p[1]+2*zoom);g.scale(1,.46);g.fillStyle='#1b241d32';g.beginPath();g.arc(0,0,r*SX*1.65*zoom,0,7);g.fill();g.restore()}
+function prism(x,y,w,d,z,h,c,hit=null){let base=[[x,y],[x+w,y],[x+w,y+d],[x,y+d]],top=base.map(v=>[...v,z+h]),bot=base.map(v=>[...v,z]);let shades=[.78,.97,.66,.82];let faces=[0,1,2,3].map(i=>({i,depth:dist((base[i][0]+base[(i+1)%4][0])/2,(base[i][1]+base[(i+1)%4][1])/2)}));faces.sort((a,c)=>a.depth-c.depth);faces.forEach(({i})=>{let j=(i+1)%4;poly(shapePts([bot[i],bot[j],top[j],top[i]]),color(c,shades[i]),'#46382a',.9,hit)});poly(shapePts(top),color(c,1.23),'#544435',.95,hit)}
+// The stair flight is actual layered stone geometry. It meets the lower edge
+// and climbs toward the higher edge; its risers cast readable projected faces.
+function drawStairFlight(x,y,level){
+ const i=y*N+x,kind=stairTypes[i]||'up',dir=stairLowDirection(x,y);
+ const z0=kind==='up'?Math.max(0,level-1):level;
+ const steps=7, margin=.065;
+ function wp(u,v,z){
+  let xx,yy;
+  if(dir===0){xx=x+margin+(.87*v); yy=y+margin+.87*u}
+  else if(dir===1){xx=x+.935-.87*u; yy=y+margin+.87*v}
+  else if(dir===2){xx=x+margin+.87*v;yy=y+.935-.87*u}
+  else {xx=x+margin+.87*u;yy=y+margin+.87*v}
+  return P(xx,yy,z);
+ }
+ // Dark bearing foundation and full-width stone stringers / side curbs.
+ poly([wp(0,0,z0),wp(1,0,z0+1),wp(1,1,z0+1),wp(0,1,z0)],'#7e6650','#544438',1);
+ for(let k=0;k<steps;k++){
+  const u0=k/steps,u1=(k+1)/steps,za=z0+k/steps,zb=z0+(k+1)/steps;
+  let col=['#c9ae85','#d6bf96','#c3aa81'][k%3];
+  poly([wp(u0,.035,za),wp(u0,.965,za),wp(u0,.965,zb),wp(u0,.035,zb)],'#9b7c59','#4f4337',1.0);
+  poly([wp(u0,.035,zb),wp(u1,.035,zb),wp(u1,.965,zb),wp(u0,.965,zb)],col,'#5b4738',1.0);
+  // Inset mortar and a tiny highlight make every individual step legible.
+  line(wp(u0,.075,zb+.012),wp(u0,.93,zb+.012),'#f4dcaa',1.2*zoom);
+  if(k%2===0){line(wp(u0+.045,.50,zb+.016),wp(u1-.025,.50,zb+.016),'#9e815f',.7*zoom)}
+ }
+ // Low parapet rails follow the rise of the staircase, with capped joints.
+ for(let side of [.025,.975])for(let k=0;k<steps;k++){
+  let a=k/steps,b2=(k+1)/steps,za=z0+k/steps,zb=z0+(k+1)/steps;
+  poly([wp(a,side,za+.12),wp(b2,side,zb+.12),wp(b2,side,zb+.26),wp(a,side,za+.26)],side<.5?'#a48967':'#b89b77','#65513b',.8);
+ }
+}
+function drawWoodBridge(x,y){
+ const h=heightAt(x,y),hx=(isBridge(x-1,y)?2:0)+(isBridge(x+1,y)?2:0)+(ground(x-1,y)==='water'?1:0)+(ground(x+1,y)==='water'?1:0);
+ const hy=(isBridge(x,y-1)?2:0)+(isBridge(x,y+1)?2:0)+(ground(x,y-1)==='water'?1:0)+(ground(x,y+1)==='water'?1:0);
+ const alongX=hx>hy;
+ // A short modular raised deck. Adjacent sections form a connected span.
+ const d=alongX?(u,v,z)=>P(x+u,y+v,z):(u,v,z)=>P(x+v,y+u,z);
+ const deck=.24;
+ for(let side of [.12,.88]){
+  poly([d(0,side-.075,h+.01),d(1,side-.075,h+.01),d(1,side+.075,h+.01),d(0,side+.075,h+.01)],'#60432e','#352d22',1);
+  // Footings are visible over water.
+  for(let u of [.12,.88])line(d(u,side,h+.08),d(u,side,h-.28),'#5e3b24',5*zoom);
+ }
+ poly([d(.01,.07,h+deck),d(.99,.07,h+deck),d(.99,.93,h+deck),d(.01,.93,h+deck)],'#7d5736','#3b3028',1);
+ // Perpendicular plank joints, wood grain and slight color variation.
+ for(let k=0;k<8;k++){
+  let u0=k/8+.012,u1=(k+1)/8-.009,c=['#b58a54','#a47543','#c1945a','#8f6339'][k%4];
+  poly([d(u0,.09,h+deck+.012),d(u1,.09,h+deck+.012),d(u1,.91,h+deck+.012),d(u0,.91,h+deck+.012)],c,'#543824',.9,{x,y});
+  line(d(u0+.016,.22,h+deck+.018),d(u1-.018,.22,h+deck+.018),'#e0b779',.65);
+ }
+ // Timber railing: posts and two continuous longitudinal rails.
+ for(let side of [.035,.965]){
+  for(let u of [.06,.49,.94])line(d(u,side,h+.24),d(u,side,h+.78),'#39291f',5*zoom);
+  line(d(.04,side,h+.76),d(.96,side,h+.76),'#493222',6*zoom);
+  line(d(.04,side,h+.79),d(.96,side,h+.79),'#ca975d',2*zoom);
+  line(d(.04,side,h+.49),d(.96,side,h+.49),'#966a42',3*zoom);
+ }
+}
+
+function groundTile(x,y){
+ let kind=ground(x,y),level=heightAt(x,y),v=rnd(x*17+y*47),palette={grass:['#6f9246','#72994b','#77964e','#71904a','#7c9b50'],dirt:['#a69b72','#b5a477','#aa9770','#b9a783','#b2a079'],road:['#d0b98c','#cead79','#ddc497','#c6b086','#dab98d'],water:['#438b9c','#4c93a7','#3e8b9b','#4c9da8','#5095a8'],rock:['#888477','#a99e83','#979282','#b3a286','#8e8a79'],stairs:['#c3ad85','#b3a17e','#d0b88a','#ad9b7a','#ccb38d']};
+ let c=palette[kind][Math.floor(v*5)];
+ // Side walls of raised tiles: a true stepped height map, not painted slopes.
+ if(level>0){
+  let edges=[{nx:x,ny:y-1,a:[x,y],bb:[x+1,y],shade:'#5e5548'},{nx:x+1,ny:y,a:[x+1,y],bb:[x+1,y+1],shade:'#7a705d'},{nx:x,ny:y+1,a:[x+1,y+1],bb:[x,y+1],shade:'#b7a07b'},{nx:x-1,ny:y,a:[x,y+1],bb:[x,y],shade:'#998767'}];
+  for(let e of edges){let neighbor=heightAt(e.nx,e.ny);if(neighbor>=level)continue;
+   if(kind==='stairs'&&(stairTypes[y*N+x]||'up')==='up'&&DIRS[stairLowDirection(x,y)][0]===e.nx-x&&DIRS[stairLowDirection(x,y)][1]===e.ny-y)continue;
+   let [a,b2]=[e.a,e.bb];renderBase=0;
+   poly(shapePts([[...a,neighbor],[...b2,neighbor],[...b2,level],[...a,level]]),kind==='rock'?color(e.shade,.83):e.shade,'#534737',.85,{x,y});
+   for(let zz=neighbor+.26;zz<level;zz+=.42){let pp=P(a[0]*.75+b2[0]*.25,a[1]*.75+b2[1]*.25,zz),qq=P(a[0]*.25+b2[0]*.75,a[1]*.25+b2[1]*.75,zz);line(pp,qq,'#d7b99472',.7)}
+  }
+ }
+ renderBase=level;
+ poly(shapePts([[x,y,kind==='stairs'&&(stairTypes[y*N+x]||'up')==='up'?-1:0],[x+1,y,kind==='stairs'&&(stairTypes[y*N+x]||'up')==='up'?-1:0],[x+1,y+1,kind==='stairs'&&(stairTypes[y*N+x]||'up')==='up'?-1:0],[x,y+1,kind==='stairs'&&(stairTypes[y*N+x]||'up')==='up'?-1:0]]),c,'#354a3040',.7,{x,y});
+ if(kind==='water'){for(let t=0;t<3;t++){let xx=x+.19+.25*t,yy=y+.20+(.07*Math.sin(now*1.8+t+x));line(P(xx,yy,.01),P(xx+.22,yy,.01),'#b5e0d28a',1)}}
+ else if(kind==='stairs'){
+  // Projected staircase with actual stone risers, treads and side rails.
+  renderBase=0;drawStairFlight(x,y,level);renderBase=level;
+ }else{for(let i=0;i<(kind==='grass'?5:9);i++){let a=rnd(13*x+31*y+i*17),bb=rnd(x*29+y*83+i*8);let p=P(x+.10+a*.8,y+.09+bb*.8,.014);rect(p[0],p[1],(kind==='road'?3:2)*zoom,2*zoom,kind==='grass'?(a>.5?'#9fb366':'#54783b'):(kind==='road'?'#e6d0a1':kind==='rock'?'#dbd1b3':'#c1ac81'))}
+ if(kind==='grass'&&rnd(x*61+y*11)>.68){let p=P(x+.38,y+.58,.015);rect(p[0],p[1],3*zoom,2*zoom,'#e0ce8a')}}
+ if(isBridge(x,y)){renderBase=0;drawWoodBridge(x,y)}
+ renderBase=0;
+}
+function drawCliff(){renderBase=0;let corners=[[0,0],[N,0],[N,N],[0,N]],depths=[];for(let i=0;i<4;i++){let j=(i+1)%4;let a=corners[i],cc=corners[j];depths.push({i,a,cc,dep:dist((a[0]+cc[0])/2,(a[1]+cc[1])/2)})}let bottom=corners.map(([x,y])=>P(x,y,-1.4));poly(bottom,'#69553b',null);depths.sort((a,c)=>a.dep-c.dep).forEach(e=>{const a=e.a,c=e.cc;let face=[P(...a),P(...c),P(c[0],c[1],-1.4),P(a[0],a[1],-1.4)];poly(face,(e.i%2?'#a48b65':'#b89c72'),'#6e5940',1);for(let k=0;k<26;k++){let t=(k+rnd(k*73+e.i)*.6)/26,u=rnd(k*17+e.i*27),xx=a[0]*(1-t)+c[0]*t,yy=a[1]*(1-t)+c[1]*t;let p=P(xx,yy,-.12-u*1.12);rect(p[0],p[1],(u>.5?7:3)*zoom,(u>.75?9:5)*zoom,u>.5?'#d1af7f':'#8f795b')}})}
+function bricks(x,y,w,d,z,h,kind='sand'){let col=kind==='sand'?'#edcd92':'#8a6748';for(let j=0;j<Math.floor(h*3);j++){let t=(j+.37)/(h*3),row=z+t*h;for(let k=0;k<Math.ceil(w*3);k++){let xx=x+.08+(k+(j%2)*.42)*w/Math.ceil(w*3);if(xx>x+w-.09)continue;let p=P(xx,y+d+.002,row);rect(p[0],p[1],(3+rnd(j*7+k)*3)*zoom,(2+rnd(k+j*31)*2)*zoom,col)}for(let k=0;k<Math.ceil(d*3);k++){let yy=y+.08+(k+(j%2)*.42)*d/Math.ceil(d*3);if(yy>y+d-.09)continue;let p=P(x+w+.002,yy,row);rect(p[0],p[1],3*zoom,2*zoom,color(col,.67))}}}
+function crenels(x,y,w,d,z,c='#d2b27b',height=.44,amount=3){for(let i=0;i<amount;i++){let t=(i+.12)/amount;let q=(w-.05)/amount*.53;prism(x+t*w,y,.045+q,.16,z,height,c);prism(x+t*w,y+d-.16,.045+q,.16,z,height,c)}for(let i=1;i<amount-1;i++){let t=i/amount;prism(x,y+t*d,.16,.15,z,height,c);prism(x+w-.16,y+t*d,.16,.15,z,height,c)}}
+function line3(a,c,stroke,w=1){line(P(...a),P(...c),stroke,w*zoom)}
+function drawWall(o){let x=o.x+.05,y=o.y+.05,z=0,health=o.hp/o.max,h=1.65*(.31+.69*health);let nx=!!find(o.x-1,o.y)||!!find(o.x+1,o.y),ny=!!find(o.x,o.y-1)||!!find(o.x,o.y+1);let wx=nx||!ny? .96:.37,wy=nx||!ny?.37:.96;if(wx<.5)x+=.30;if(wy<.5)y+=.30;shadow(o.x+.5,o.y+.5,.8);prism(x,y,wx,wy,z,h,'#d8b880',o);bricks(x,y,wx,wy,z,h);if(health>.55)crenels(x,y,wx,wy,h,'#e4c78f',.42,wx>.5?3:2);else if(health>.26)prism(x+.08,y+.08,.29,.26,h,.13,'#b49672');if(wx>.5)line3([x+.06,y+.22,h],[x+wx-.04,y+.22,h],'#73533e',.8);}
+function drawGate(o){let x=o.x+.015,y=o.y+.26,health=o.hp/o.max,h=2.2*(.38+.62*health);shadow(o.x+.5,o.y+.5,1);prism(x,y,.97,.56,0,h,'#c8a475',o);bricks(x,y,.97,.56,0,h);if(health>.5)crenels(x,y,.97,.56,h,'#dfbb80',.52,4);
+ // Dark gateway recessed into the front wall, with portcullis lattice.
+ let dr=shapePts([[x+.29,y+.58,.04],[x+.70,y+.58,.04],[x+.70,y+.58,1.55],[x+.29,y+.58,1.55]]);poly(dr,'#302521','#30251d',2,o);for(let i=0;i<3;i++){let xx=x+.32+i*.17;line3([xx,y+.582,.10],[xx,y+.582,1.50],'#77644b',1.9)}for(let j=0;j<4;j++){let zz=.24+j*.32;line3([x+.31,y+.585,zz],[x+.69,y+.585,zz],'#8f7754',1.5)}
+ // Arch lintel and bronze crest.
+ line3([x+.25,y+.595,1.58],[x+.74,y+.595,1.58],'#f4d5a3',3);let p=P(x+.5,y+.603,2.05);rect(p[0]-2*zoom,p[1]-2*zoom,5*zoom,5*zoom,'#bc7148')}
+function drawTower(o){let x=o.x+.5,y=o.y+.5,r=.61,h=3.25*(.32+.68*o.hp/o.max),n=12;shadow(x,y,1.05);let ring=[];for(let i=0;i<n;i++){let a=2*Math.PI*i/n;ring.push([x+Math.cos(a)*r,y+Math.sin(a)*r])}
+ let facets=Array.from({length:n},(_,i)=>{let j=(i+1)%n;return {i,j,d:dist((ring[i][0]+ring[j][0])/2,(ring[i][1]+ring[j][1])/2)}}).sort((a,c)=>a.d-c.d);
+ facets.forEach(({i,j},idx)=>{let a=ring[i],c=ring[j],lit=.81+.17*Math.sin(i*.7);poly(shapePts([[...a,0],[...c,0],[...c,h],[...a,h]]),color('#b99b71',lit),'#5e4b35',.7,o);for(let zz=.55;zz<h;zz+=.65){let aa=P(a[0],a[1],zz),bb=P(c[0],c[1],zz);line(aa,bb,'#9a7e5a8e',.7);let t=.25+.4*rnd(i*87+zz*11),p=P(a[0]*(1-t)+c[0]*t,a[1]*(1-t)+c[1]*t,zz+.11);rect(p[0],p[1],3*zoom,2*zoom,'#d8b889')}});
+ poly(ring.map(v=>P(...v,h)),'#776049','#3b2b23',1,o);
+ // Parapet crenellations encircle tower.
+ for(let i=0;i<(o.hp/o.max>.45?10:3);i++){let aa=2*Math.PI*i/10,xx=x+Math.cos(aa)*.50,yy=y+Math.sin(aa)*.50;prism(xx-.135,yy-.125,.27,.25,h,.48,'#c7a87e',o)}
+ // Arrow slit and stone bands on nearest facet.
+ let near=facets[facets.length-1],aa=ring[near.i],cc=ring[near.j];let xx=(aa[0]+cc[0])/2,yy=(aa[1]+cc[1])/2;line3([xx,yy,1.42],[xx,yy,2.09],'#302b29',3);
+ // Little blue pennant for defenders.
+ if(o.hp>0){let a=P(x,y,h+.18);line(a,P(x,y,h+1.24),'#543b2b',1.5);let p=P(x,y,h+1.23);poly([p,[p[0]+15*zoom,p[1]+5*zoom],[p[0],p[1]+9*zoom]],'#2f5b87','#1f3545',1)}}
+function tiledRoof(x,y,w,d,z,rise,baseCol='#b83f24'){let mid=y+d/2;let left=shapePts([[x,y,z],[x+w,y,z],[x+w,mid,z+rise],[x,mid,z+rise]]),right=shapePts([[x,mid,z+rise],[x+w,mid,z+rise],[x+w,y+d,z],[x,y+d,z]]);
+ poly(left,'#ae3c22','#522d23',1.4);poly(right,baseCol,'#562f22',1.4);
+ poly(shapePts([[x,y,z],[x,mid,z+rise],[x,y+d,z]]),'#e3c697','#5c4937',1.2);
+ poly(shapePts([[x+w,y,z],[x+w,mid,z+rise],[x+w,y+d,z]]),'#d1b17b','#5c4937',1.2);
+ for(let i=1;i<6;i++){let xx=x+w*i/6;line3([xx,y,z],[xx,mid,z+rise],'#813624',1.2);line3([xx,mid,z+rise],[xx,y+d,z],'#792c1c',1.2)}for(let j=1;j<3;j++){let t=j/3;line3([x,y+(mid-y)*t,z+rise*t],[x+w,y+(mid-y)*t,z+rise*t],'#da5d32',.8);line3([x,mid+(d/2)*t,z+rise*(1-t)],[x+w,mid+(d/2)*t,z+rise*(1-t)],'#d25a2e',.8)}}
+function drawHouse(o,barracks=false){let x=o.x+.075,y=o.y+.10;shadow(x+.43,y+.4,.8);prism(x,y,.84,.82,0,1.65,barracks?'#b1a184':'#edd0a0',o);bricks(x,y,.84,.82,0,1.65);let p=P(x+.44,y+.83,.84);rect(p[0]-4*zoom,p[1]-9*zoom,7*zoom,10*zoom,'#563f2c');let p2=P(x+.88,y+.42,1.08);rect(p2[0]-3*zoom,p2[1]-3*zoom,6*zoom,7*zoom,'#3e5a62');tiledRoof(x-.04,y-.05,.92,.92,1.65,.83,barracks?'#386580':'#b94226');if(barracks){line3([x+.7,y+.2,2.0],[x+.7,y+.2,3.55],'#5c4535',1.5);let pp=P(x+.7,y+.2,3.55);poly([pp,[pp[0]+15*zoom,pp[1]+4*zoom],[pp[0],pp[1]+11*zoom]],'#ebae5b','#493b35',1)}}
+function drawKeep(o){let x=o.x-.16,y=o.y-.16,w=1.32,d=1.32;if(o.hp/o.max<.5){drawConstructionLikeDamage(o);return}shadow(o.x+.5,o.y+.5,1.48);prism(x,y,w,d,0,4.25*(.7+.3*o.hp/o.max),'#d8b783',o);bricks(x,y,w,d,0,4.25);
+ // A strong projecting belt at the upper level.
+ prism(x-.075,y-.075,w+.15,d+.15,3.58,.23,'#b39062',o);
+ for(let i=0;i<2;i++){let zz=1.65+i*1.25;let p=P(x+w+.005,y+.57,zz);rect(p[0]-2*zoom,p[1]-8*zoom,4*zoom,11*zoom,'#332d28');let q=P(x+.48,y+d+.005,zz);rect(q[0]-2*zoom,q[1]-8*zoom,4*zoom,11*zoom,'#302c2a')}
+ crenels(x-.04,y-.04,w+.08,d+.08,4.25,'#e2c28c',.67,4);
+ prism(x+.38,y+.37,.57,.58,4.25,.58,'#b89260');tiledRoof(x+.29,y+.28,.74,.75,4.83,.66,'#af4028');
+ // Hanging banner.
+ let a=P(x+w+.013,y+.38,3.2),bb=P(x+w+.013,y+.38,2.05);poly([a,[a[0]+17*zoom,a[1]+5*zoom],[bb[0]+13*zoom,bb[1]+5*zoom],bb],'#2d567e','#caa465',1);let st=P(x+w+.016,y+.38,2.65);rect(st[0]+7*zoom,st[1],4*zoom,7*zoom,'#dfbd76');}
+function drawTree(o){let x=o.x+.5,y=o.y+.5;shadow(x,y,.57);prism(x-.09,y-.08,.18,.18,0,1.15,'#66503a');let h=1.04;for(let i=0;i<3;i++){let rr=.58-i*.10;prism(x-rr/2,y-rr/2,rr,rr,h+i*.37,.42,['#456b39','#577d43','#679451'][i]);}}
+function drawOak(o){
+ const x=o.x+.5,y=o.y+.5;shadow(x,y,.79);prism(x-.13,y-.10,.26,.24,0,1.55,'#6b4931');
+ // Interlocking clumps of cubic leaves, with a wide, naturally irregular crown.
+ const clumps=[[-.43,-.23,1.45,.48,'#456e35'],[-.05,-.38,1.58,.56,'#5b8841'],[.27,-.20,1.47,.47,'#426b32'],[-.31,.19,1.72,.52,'#729b4b'],[.18,.23,1.68,.48,'#557f3b'],[0,0,1.95,.52,'#83a958']];
+ for(let [dx,dy,z,size,col] of clumps)prism(x+dx-size/2,y+dy-size/2,size,size,z,size*.73,col);
+}
+function drawBush(o){
+ const x=o.x+.5,y=o.y+.5;shadow(x,y,.4);
+ for(let [dx,dy,h,c] of [[-.18,-.1,.16,'#3b692f'],[.13,-.12,.22,'#56873b'],[-.10,.18,.19,'#729b44'],[.16,.13,.15,'#416f32']]){
+  prism(x+dx-.17,y+dy-.17,.34,.34,.07,h+.19,c);
+ }
+ for(let i=0;i<4;i++){let p=P(x-.21+i*.13,y+(i%2?-.12:.12),.49);rect(p[0],p[1],2*zoom,2*zoom,i%2?'#d2bf7b':'#c9a8a0')}
+}
+
+function drawRubble(o){let x=o.x,y=o.y;shadow(x+.5,y+.5,.6);for(let i=0;i<7;i++){let xx=x+.11+rnd(x*127+i*11+y*19)*.64,yy=y+.11+rnd(y*97+i*33+x*17)*.64;prism(xx,yy,.1+rnd(i*19)*.14,.1+rnd(i*29)*.14,0,.13+rnd(i*71)*.26,'#ac906b')}
+}
+function drawConstructionLikeDamage(o){let x=o.x-.08,y=o.y-.08,h=4.0*(.27+.63*(o.hp/o.max));shadow(o.x+.5,o.y+.5,1.1);prism(x,y,1.16,1.16,0,h,'#bda074',o);bricks(x,y,1.16,1.16,0,h);for(let i=0;i<5;i++){let xx=x+.12+.2*i;prism(xx,y+.91,.12,.14,h,.22,'#9e8060')}}
+function drawConstruct(o){
+ let steps=({wall:18,gate:22,tower:34,keep:52,house:23,barracks:26,tree:8,oak:12,bush:5})[o.type]||16;
+ let layers=({wall:5,gate:7,tower:11,keep:14,house:6,barracks:6,tree:4,oak:5,bush:2})[o.type]||5;
+ let done=o.built*steps,blocksPerLayer=Math.ceil(steps/layers),h=({wall:1.65,gate:2.2,tower:3.25,keep:4.25,house:1.65,barracks:1.65,tree:1.8,oak:2.1,bush:.5})[o.type]||2;
+ shadow(o.x+.5,o.y+.5,.8);
+ let col=['tree','oak','bush'].includes(o.type)?'#6b8d49':o.type==='house'?'#e6c38c':'#b99b72';
+ for(let i=0;i<Math.ceil(done);i++){
+   let layer=Math.floor(i/blocksPerLayer),position=i%blocksPerLayer;
+   let count=Math.min(blocksPerLayer,4),row=layer*(h/layers),partX=(position%2)*.43,partY=Math.floor(position/2)*.43;
+   let t=clamp(done-i,0,1);
+   if(t<=0)continue;
+   let fall=(1-t)*(.7+layer*.07),bx=o.x+.09+partX,by=o.y+.09+partY;
+   prism(bx,by,.41,.41,row+fall,h/layers*.95,col);
+ }
+ // Scaffolding grows with the masonry.
+ let top=h*clamp(o.built,0,1);if(o.built<.90){for(let xx of [.09,.88]){
+  line3([o.x+xx,o.y+.06,0],[o.x+xx,o.y+.06,top+.7],'#6c5032',1.25);
+  line3([o.x+xx,o.y+.91,0],[o.x+xx,o.y+.91,top+.7],'#6c5032',1.25);
+ }if(top>.55)line3([o.x+.08,o.y+.06,top],[o.x+.9,o.y+.06,top],'#986b40',2)}
+}
+function drawFlag(){
+ renderBase=heightAt(flag.x,flag.y);const x=flag.x+.5,y=flag.y+.5,capture=battle?battle.capture:0;
+ shadow(x,y,.5);prism(x-.24,y-.24,.48,.48,0,.26,'#a48d65');
+ const bottom=.27,top=3.65,blueAmt=clamp(1-capture*2,0,1),redAmt=clamp((capture-.5)*2,0,1);
+ line3([x,y,bottom],[x,y,top],'#61452e',2.6);let tip=P(x,y,top);rect(tip[0]-3,tip[1]-4,6,6,'#f3ce76');
+ const flagCloth=(height,colour)=>{
+  if(height<=.05)return;let wind=Math.sin(now*3.1)*.13,zz=bottom+height*(top-bottom-.4),a=P(x,y,zz),bb=P(x+1.3,y+.1+wind,zz-.18),cc=P(x+1.2,y+.13+wind,zz-.78);
+  poly([a,bb,cc,P(x,y,zz-.70)],colour,'#3a3029',1.5);
+  let sun=P(x+.43,y+.04+wind*.5,zz-.41);rect(sun[0]-3,sun[1]-3,6,6,'#f5d78b');
+ };
+ if(capture<.5)flagCloth(blueAmt,'#315e9c');
+ else flagCloth(redAmt,'#b64e37');
+ if(battle&&capture>0&&capture<1){let p=P(x,y,.4);rect(p[0]-17,p[1]+6,34,6,'#3b342c');rect(p[0]-16,p[1]+7,32*capture,4,'#dfac67')}
+}
+function drawObjectiveMarker(){
+ renderBase=heightAt(flag.x,flag.y);const p=P(flag.x+.5,flag.y+.5,4.1), label=phase==='siege'?tr('⚑ ЦЕЛЬ ОСАДЫ','⚑ SIEGE OBJECTIVE'):tr('⚑ ЗНАМЯ','⚑ BANNER');
+ g.font='900 11px system-ui, sans-serif';let width=Math.ceil(g.measureText(label).width)+19;
+ rect(p[0]-width/2,p[1]-12,width,22,phase==='siege'?'#633c33eb':'#25394ceb');
+ g.strokeStyle='#e5bf7f';g.lineWidth=1.3;g.strokeRect(Math.round(p[0]-width/2)+.5,Math.round(p[1]-12)+.5,width,22);
+ g.fillStyle='#ffe4af';g.fillText(label,Math.round(p[0]-width/2+9),Math.round(p[1]+3));
+ line(P(flag.x+.5,flag.y+.5,3.65),[p[0],p[1]+10],'#f1cb87',1.2);
+}
+function drawObject(o){renderBase=heightAt(o.x,o.y);if(o.built!==undefined&&o.built<1&&phase==='build'){drawConstruct(o);return}if(o.hp<=0){drawRubble(o);return}if(o.type==='wall')drawWall(o);else if(o.type==='gate')drawGate(o);else if(o.type==='tower')drawTower(o);else if(o.type==='keep')drawKeep(o);else if(o.type==='house')drawHouse(o);else if(o.type==='barracks')drawHouse(o,true);else if(o.type==='tree')drawTree(o);else if(o.type==='oak')drawOak(o);else if(o.type==='bush')drawBush(o)}
+function drawCharacter(x,y,enemy=false,alive=true,phaseRun=0,z=0){renderBase=elevation(x,y);let p=P(x,y,z);let bob=phaseRun?Math.sin(now*12+phaseRun)*1.8:0;let scl=zoom;g.save();g.translate(Math.round(p[0]),Math.round(p[1]+bob));g.scale(scl,scl);rect(-4,-6,8,6,'#342d2b');rect(-5,-16,10,11,enemy?'#ab5544':'#294e7b');rect(-6,-22,12,7,'#c28c59');rect(-7,-26,14,5,enemy?'#8c3832':'#465765');rect(-3,-26,8,2,'#818d8c');rect(-7,-13,3,8,enemy?'#d2a576':'#d19a66');rect(5,-13,3,8,enemy?'#d2a576':'#d19a66');if(enemy){rect(-11,-13,4,11,'#7e4130');rect(-11,-17,4,5,'#d2c6a1')}else{rect(8,-20,2,15,'#8e734b')}g.restore()}
+
+function drawTrebuchet(c){
+ renderBase=0;
+ const cx=c.x,cy=c.y,phase=c.firing||0;const sc=c.kind==='light'?.68:1.04;
+ const pp=(dx,dy,z)=>P(cx+dx*sc,cy+dy*sc,z*sc);
+ // Broad four-foot timber base, with a believable elevated A-frame.
+ let base=[[-.79,-.60,0],[.79,-.60,0],[.79,.62,0],[-.79,.62,0]];
+ shadow(cx,cy,1.55*sc);
+ poly(base.map(v=>pp(...v)),'#59402b','#352720',2);
+ const beam=(a,b,width,dark='#61402a',light='#b58a52')=>{
+  line(pp(...a),pp(...b),'#32271f',(width+3.7*zoom)*sc);
+  line(pp(...a),pp(...b),dark,width*sc);
+  line(pp(a[0]-.035,a[1]-.032,a[2]+.045),pp(b[0]-.035,b[1]-.032,b[2]+.045),light,Math.max(1,width*.3)*sc);
+ };
+ // Long foundation skids and rectangular cross braces.
+ beam([-.78,-.70,.12],[-.78,.67,.12],9*zoom);
+ beam([ .78,-.70,.12],[ .78,.67,.12],9*zoom);
+ beam([-.85,.49,.23],[.85,.49,.23],7*zoom);
+ beam([-.85,-.49,.23],[.85,-.49,.23],7*zoom);
+ const pivot=[0,-.10,2.55];
+ // Two A-shaped braced trestles at either side of the sling plane.
+ for(let yy of [-.45,.45]){
+  beam([-.69,yy,.18],[0,yy,2.55],9*zoom);
+  beam([ .69,yy,.18],[0,yy,2.55],9*zoom);
+  beam([-.58,yy,.90],[.58,yy,.90],5*zoom,'#735037','#cc9f68');
+  beam([-.40,yy,.18],[.40,yy,1.35],3.7*zoom,'#744d2d','#c3965e');
+ }
+ beam([0,-.51,2.56],[0,.51,2.56],10*zoom,'#564233','#a98a63');
+ for(let dx of [-.75,.75])for(let dy of [-.47,.47]){
+  let cp=pp(dx,dy,.23);rect(cp[0]-4.3*zoom*sc,cp[1]-4*zoom*sc,8*zoom*sc,8*zoom*sc,'#606068');
+  rect(cp[0]-1.1*zoom*sc,cp[1]-1.1*zoom*sc,2.2*zoom*sc,2.2*zoom*sc,'#c6b39a');
+ }
+ // Throwing beam swings upward toward the castle; its short end carries a stone box.
+ const progress=phase>0?clamp((1.66-phase)/.79,0,1):0;
+ const recovery=phase>0?clamp((.75-phase)/.70,0,1):0;
+ const ease=t=>t*t*(3-2*t);
+ const angle=phase>0?.16+ease(progress)*1.12-ease(recovery)*1.12:.16;
+ const L=3.85,short=.76;
+ const tip=[0,pivot[1]-L*Math.cos(angle),pivot[2]+L*Math.sin(angle)];
+ const tail=[0,pivot[1]+short*Math.cos(angle),pivot[2]-short*Math.sin(angle)];
+ beam(tail,tip,11.5*zoom,'#76502f','#c69a62');
+ // Parallel dark iron reinforcing strips along the arm.
+ line(pp(0,tail[1],tail[2]+.07),pp(0,tip[1],tip[2]+.08),'#342c28',1.5*zoom);
+ // Hanging counterweight: iron-bound rectangular stone cradle, mounted on a pivot.
+ const anchor=pp(...tail),boxZ=Math.max(.18,tail[2]-.82),boxP=pp(tail[0],tail[1],boxZ);
+ line(anchor,boxP,'#342e29',3.4*zoom);
+ const left=pp(-.23,tail[1]-.16,boxZ),right=pp(.23,tail[1]-.16,boxZ),back=pp(.23,tail[1]+.25,boxZ),front=pp(-.23,tail[1]+.25,boxZ);
+ poly([left,right,back,front],'#8a765d','#3e3329',2);
+ let below=[pp(-.23,tail[1]+.25,boxZ-.52),pp(.23,tail[1]+.25,boxZ-.52)];
+ poly([front,back,below[1],below[0]],'#544c44','#332d27',1.4);
+ line(pp(-.2,tail[1]+.22,boxZ-.23),pp(.2,tail[1]+.22,boxZ-.23),'#c7a06b',3*zoom);
+ // Sling with a separate pouch, ropes and a stone before release.
+ let ropeLen=.78;
+ let sY=tip[1]-.12,sZ=tip[2]-.48;
+ let slingEnd=pp(0,sY-ropeLen*.38,sZ-ropeLen*.70);
+ let tipP=pp(...tip);
+ const launch=phase>0&&phase<1.1&&phase>.34;
+ if(!launch){
+  line(tipP,slingEnd,'#cdb189',2.25*zoom);
+  line(pp(.08,tip[1],tip[2]),[slingEnd[0]+4*zoom,slingEnd[1]],'#d2b686',1.5*zoom);
+  g.fillStyle='#4c4743';g.beginPath();g.ellipse(slingEnd[0],slingEnd[1],6*zoom,4.5*zoom,0,0,7);g.fill();
+  rect(slingEnd[0]-2*zoom*sc,slingEnd[1]-3*zoom*sc,3*zoom*sc,2*zoom*sc,'#a9a29a');
+ }else{
+  line(tipP,pp(0,tip[1]-.18,tip[2]-.38),'#dbc7a3',1.4*zoom);
+ }
+ // Oversized axle cheeks and bolts.
+ const hub=pp(...pivot);g.fillStyle='#463526';g.beginPath();g.arc(hub[0],hub[1],6.6*zoom,0,Math.PI*2);g.fill();
+ g.fillStyle='#cda371';g.beginPath();g.arc(hub[0],hub[1],3.1*zoom,0,Math.PI*2);g.fill();
+}
+
+function drawArrow(from,to){const p=P(from.x,from.y,from.z),q=P(to.x,to.y,to.z);line(p,q,'#f5da8f',2.7*zoom);let dx=q[0]-p[0],dy=q[1]-p[1],l=Math.hypot(dx,dy)||1;line([q[0]-dx/l*5-dy/l*2,q[1]-dy/l*5+dx/l*2],q,'#72492a',1)}
+function drawEffects(){if(!battle)return;renderBase=0;
+  for(let c of battle.trebuchets)drawTrebuchet(c);
+ for(let p of battle.projectiles){
+  if(p.t<0)continue;
+  let x=p.from.x+(p.to.x-p.from.x)*p.t,y=p.from.y+(p.to.y-p.from.y)*p.t;
+  let z=1.3+(p.weaponKind==='heavy'?5.2:4.2)*Math.sin(p.t*Math.PI)+heightAt(p.toTileX,p.toTileY)*p.t;
+  let pr=P(x,y,z);
+  if(p.kind==='stone'){
+   let rr=(p.weaponKind==='light'?4.9:8.6)*zoom;
+   g.fillStyle='#2a282a';g.beginPath();g.arc(pr[0]+2*zoom,pr[1]+3*zoom,rr+1,0,7);g.fill();
+   g.fillStyle='#7e7c75';g.beginPath();g.arc(pr[0],pr[1],rr,0,7);g.fill();
+   rect(pr[0]-3*zoom,pr[1]-4*zoom,4*zoom,3*zoom,'#c0b8a1');rect(pr[0]+2*zoom,pr[1]+1*zoom,3*zoom,2*zoom,'#4b4844');
+  }else{
+   let t=Math.max(0,p.t-.06),bx=p.from.x+(p.to.x-p.from.x)*t,by=p.from.y+(p.to.y-p.from.y)*t,br=P(bx,by,z+.08);
+   line(br,pr,'#3a312c',6*zoom);line(br,pr,'#d7c3a0',2*zoom);g.beginPath();g.fillStyle='#b4bfc1';g.arc(pr[0],pr[1],3.4*zoom,0,7);g.fill();
+  }
+ }
+ for(let a of battle.arrows){let f=a.from,t=a.to;let fx=f.x+(t.x-f.x)*a.t,fy=f.y+(t.y-f.y)*a.t;drawArrow({x:fx-.14,y:fy-.1,z:1.2},{x:fx,y:fy,z:.5})}
+ for(let p of battle.particles){let sc=1-p.life/p.max,pp=P(p.x+p.dx*sc,p.y+p.dy*sc,p.z+p.dz*sc-1.9*sc*sc);g.globalAlpha=clamp(p.life/p.max,0,1);rect(pp[0],pp[1],p.size*zoom,p.size*zoom,p.col)}g.globalAlpha=1;
+ for(let p of battle.debris){let xyz=P(p.x,p.y,p.z);g.save();g.translate(xyz[0],xyz[1]);g.rotate(p.rot);rect(-p.size/2,-p.size/2,p.size,p.size*.7,p.col);g.restore()}
+}
+function niceBG(){let gradient=g.createLinearGradient(0,0,0,H);gradient.addColorStop(0,'#e9dabc');gradient.addColorStop(.62,'#d8cba8');gradient.addColorStop(1,'#a9a084');g.fillStyle=gradient;g.fillRect(0,0,W,H);
+ // Quiet silhouette of distant hills.
+ g.fillStyle='#b9b092';g.beginPath();g.moveTo(0,456);for(let x=0;x<=W;x+=12){g.lineTo(x,435+20*Math.sin(x/123)+7*Math.sin(x/27))}g.lineTo(W,H);g.lineTo(0,H);g.fill();
+ g.fillStyle='#afa486';g.beginPath();g.moveTo(0,522);for(let x=0;x<=W;x+=14)g.lineTo(x,492+17*Math.sin(x/70)+7*Math.sin(x/19));g.lineTo(W,H);g.lineTo(0,H);g.fill();
+ // Pixelated drifting clouds.
+ for(let i=0;i<7;i++){let px=((i*229+now*(i%2?2:-1)*2)%(W+250)+W+250)%(W+250)-100,py=105+i*47%175;rect(px,py,50,7,'#f7e8c02b');rect(px+15,py-7,25,7,'#f7e8c02b')}
+}
+function pointIn(poly2,x,y){let inside=false;for(let i=0,j=poly2.length-1;i<poly2.length;j=i++){let xi=poly2[i][0],yi=poly2[i][1],xj=poly2[j][0],yj=poly2[j][1];if((yi>y)!==(yj>y)&&x<(xj-xi)*(y-yi)/(yj-yi+1e-10)+xi)inside=!inside}return inside}
+function pointerTile(sx,sy){if(sx<0||sy<0||sx>W||sy>H)return null;for(let i=hits.length-1;i>=0;i--)if(pointIn(hits[i].pts,sx,sy)){let o=hits[i].hit;return {x:o.x,y:o.y}}
+ const a=(sx-W/2)/(SX*zoom),c=(sy-350)/(SY*zoom);let rx=(a+c)/2,ry=(c-a)/2;let dx,dy;if(rot===0){dx=rx;dy=ry}else if(rot===1){dx=ry;dy=-rx}else if(rot===2){dx=-rx;dy=-ry}else{dx=-ry;dy=rx}let x=Math.floor(dx+N/2),y=Math.floor(dy+N/2);return x>=0&&y>=0&&x<N&&y<N?{x,y}:null}
+function paintSelection(){if(!hover||phase!=='build')return;let {x,y}=hover;renderBase=heightAt(x,y);let pts=shapePts([[x,y,.03],[x+1,y,.03],[x+1,y+1,.03],[x,y+1,.03]]);g.globalAlpha=.22;poly(pts,selected==='erase'?'#d65d4a':'#f8eec2',null);g.globalAlpha=1;poly(pts,'#ffffff00','#fff1c7',2);let p=P(x+.5,y+.5,.1);let label=itemName(selected);g.font='bold 13px monospace';let width=g.measureText(label).width+16;rect(p[0]-width/2,p[1]-52*zoom,width,23,'#282c28d9');g.fillStyle='#ffdf9f';g.fillText(label,p[0]-width/2+8,p[1]-37*zoom)}
+function render(){
+ g.setTransform(1,0,0,1,0,0);g.imageSmoothingEnabled=false;hits=[];renderBase=0;niceBG();
+ g.fillStyle='#292d2240';g.beginPath();g.ellipse(W/2,567,410*zoom,55*zoom,0,0,7);g.fill();drawCliff();
+ const tiles=[];for(let yy=0;yy<N;yy++)for(let xx=0;xx<N;xx++)tiles.push({x:xx,y:yy,d:dist(xx+.5,yy+.5)});
+ tiles.sort((a,c)=>a.d-c.d);for(let p of tiles)groundTile(p.x,p.y);renderBase=0;
+ let things=b.map(o=>({kind:'building',o,dep:dist(o.x+.5,o.y+.5)}));
+ things.push({kind:'flag',dep:dist(flag.x+.5,flag.y+.5)});
+ if(phase==='siege'){for(let e of battle.enemies)if(e.hp>0)things.push({kind:'soldier',e,dep:dist(e.x,e.y)});for(let guard of battle.guards)if(guard.hp>0)things.push({kind:'guard',guard,dep:dist(guard.x,guard.y)})}
+ things.sort((a,c)=>a.dep-c.dep);
+ things.forEach(item=>{
+  if(item.kind==='flag')drawFlag();
+  else if(item.kind==='soldier')drawCharacter(item.e.x,item.e.y,true,true,item.e.id);else if(item.kind==='guard')drawCharacter(item.guard.x,item.guard.y,false,true,item.guard.id);
+  else drawObject(item.o)
+ });
+ renderBase=0;if(phase==='siege')drawEffects();else paintSelection();drawObjectiveMarker();renderBase=0;
+ let vg=g.createRadialGradient(W/2,H/2,290,W/2,H/2,720);vg.addColorStop(0,'#00000000');vg.addColorStop(1,'#221a161c');g.fillStyle=vg;g.fillRect(0,0,W,H);
+ screen.imageSmoothingEnabled=false;screen.clearRect(0,0,W,H);screen.drawImage(low,0,0,W,H);
+}
+
+// Siege 3.2: two weighted projectile types, cost-aware pathing and banner capture.
+function makeGuards(count=4){
+ let spots=[];
+ for(let y=0;y<N;y++)for(let x=0;x<N;x++){
+  let d=Math.abs(flag.x-x)+Math.abs(flag.y-y);
+  if(d>0&&d<=10&&!find(x,y)&&(ground(x,y)!=='water'||isBridge(x,y))&&Math.abs(heightAt(flag.x,flag.y)-heightAt(x,y))<=1)spots.push({x,y,d});
+ }
+ spots.sort((a,c)=>a.d-c.d || Math.abs(a.y-(flag.y+1))-Math.abs(c.y-(flag.y+1)));
+ return spots.slice(0,count).map(({x,y},i)=>({id:100+i,x:x+.5,y:y+.5,hp:110,max:110,cd:0,atk:0}));
+}
+const presets={easy:{life:75,speed:.92,shots:1.18,rocks:1.20},normal:{life:96,speed:1.05,shots:1,rocks:1},hard:{life:115,speed:1.20,shots:.88,rocks:.85}};
+const LOG_DE={
+ '<b>⚔</b> Началась осада!':'<b>⚔</b> Die Belagerung beginnt!',
+ 'Два требушета на позициях. Перед захватом флага придётся разгромить стражу.':'Zwei Triböcke stehen bereit. Vor der Bannereroberung muss die Wache besiegt werden.',
+ '⚔ Стража у знамени пала.':'⚔ Ein Bannerwächter ist gefallen.',
+ '⚑ Враг прорвался во двор — захват знамени!':'⚑ Die Angreifer sind im Burghof — das Banner ist bedroht!',
+ '⚑ Синий флаг снят! Враг поднимает свой.':'⚑ Blaues Banner gesenkt! Die Angreifer hissen ihres.',
+ '🏰 <b>Знамя удержано!</b>':'🏰 <b>Banner verteidigt!</b>',
+ '🚩 <b>Враг сменил флаг!</b>':'🚩 <b>Das feindliche Banner wurde gehisst!</b>',
+ '● Требушет метнул каменную глыбу!':'● Ein Tribock schleudert einen Felsblock!',
+   '● Большой требушет запустил глыбу!':'● Der große Tribock schleudert einen Felsblock!',
+   '● Малый требушет выпустил камень!':'● Der kleine Tribock schießt präzise!'
+};
+const LOG_EN={
+ '<b>⚔</b> Началась осада!':'<b>⚔</b> The siege has begun!',
+ 'Два требушета на позициях. Перед захватом флага придётся разгромить стражу.':'Two trebuchets are in position. The banner guard must be defeated.',
+ '⚔ Стража у знамени пала.':'⚔ A banner guard has fallen.',
+ '⚑ Враг прорвался во двор — захват знамени!':'⚑ Invaders entered the courtyard — banner under attack!',
+ '⚑ Синий флаг снят! Враг поднимает свой.':'⚑ Blue banner lowered! Invaders are raising theirs.',
+ '🏰 <b>Знамя удержано!</b>':'🏰 <b>Banner defended!</b>',
+ '🚩 <b>Враг сменил флаг!</b>':'🚩 <b>Invaders raised their banner!</b>',
+ '● Требушет метнул каменную глыбу!':'● Trebuchet launched a boulder!',
+   '● Большой требушет запустил глыбу!':'● Heavy trebuchet launched a boulder!',
+   '● Малый требушет выпустил камень!':'● Light trebuchet fires precisely!'
+};
+function localizeLog(str){
+ if(lang==='ru')return str;
+ if(lang==='de'&&LOG_DE[str])return LOG_DE[str];
+ if(lang==='en'&&LOG_EN[str])return LOG_EN[str];
+ let match=/^<b>✹<\/b> (.+) обрушена — открыт проход!$/.exec(str);
+ if(match){let name=Object.keys(defs).find(k=>defs[k].name===match[1]);return lang==='de'?'<b>✹</b> '+(name?itemName(name):'Befestigung')+' zerstört — Durchgang offen!':'<b>✹</b> '+(name?itemName(name):'Fortification')+' collapsed — passage open!'}
+ return str;
+}
+function redrawFeed(){$('feed').innerHTML=events.map(e=>'<div>'+localizeLog(e)+'</div>').join('')}
+function feed(t){events.unshift(t);events=events.slice(0,12);redrawFeed()}
+
+function targetKeep(){return b.find(o=>o.type==='keep'&&o.hp>0)||null}
+function frontGate(){return b.filter(o=>o.type==='gate'&&o.hp>0).sort((a,c)=>c.y-a.y)[0]||null}
+function setupSiege(){
+ if(phase==='build')blueprint=snapshot();else if(blueprint)loadSnap(blueprint);
+   $('stairDirectionBar').style.display='none';$('attackersCount').disabled=true;$('defendersCount').disabled=true;
+ // Complete already placed sections before running the battle.
+ b.forEach(o=>o.built=1);
+ phase='siege';let difficulty=$('difficulty').value;const numAttack=clamp(parseInt($('attackersCount').value)||8,1,60),numDefense=clamp(Number($('defendersCount').value)||0,0,24);$('attackersCount').value=numAttack;$('defendersCount').value=numDefense;const cfg={...presets[difficulty],total:numAttack};
+ battle={cfg,tick:0,paused:false,enemies:[],projectiles:[],arrows:[],particles:[],debris:[],
+  guards:makeGuards(numDefense),trebuchets:[
+   {x:6.0,y:25.0,kind:'heavy',cd:2.4,firing:0},
+   {x:19.0,y:24.6,kind:'light',cd:4.1,firing:0}
+  ],
+  spawned:0,total:cfg.total,kills:0,winner:null,elapsed:0,breaches:0,spawnTimer:0,capture:0,captureAnnounced:false,pathField:null,pathDirty:true};events=[];
+ $('tabBuild').classList.remove('active');$('tabSiege').classList.add('active');$('buildPanel').classList.add('hide');$('battlePanel').classList.add('show');
+ $('attackMain').textContent=tr('↻ ПОВТОРИТЬ ОСАДУ','↻ RESTART SIEGE');$('sceneEyebrow').textContent=tr('СРАЖЕНИЕ В РЕАЛЬНОМ ВРЕМЕНИ','REAL-TIME SIEGE');
+ $('sceneTitle').textContent=tr('Осада крепости','Castle under siege');$('sceneSub').textContent=tr('Большой и малый требушеты · осада высот · захват знамени','Heavy & light trebuchets · high ground · capture the banner');
+ $('modePill').textContent=tr('⚔ ИДЁТ ШТУРМ','⚔ SIEGE IN PROGRESS');$('tutorial').style.display='none';$('result').classList.remove('show');
+ $('rightTitle').textContent=tr('Военная хроника','Battle chronicle');$('rightSubtitle').textContent=tr('Для победы врагу необходимо сменить флаг','Attackers must replace the banner');
+ $('pauseBtn').textContent=tr('Ⅱ Пауза','Ⅱ Pause');$('selectedPill').textContent=tr('Цель: захватить знамя','Objective: capture the banner');feed('<b>⚔</b> Началась осада!');feed('Два требушета на позициях. Перед захватом флага придётся разгромить стражу.');updateBattleUI();persist();
+}
+function backBuild(){
+ if(phase!=='siege')return;let old=blueprint;phase='build';battle=null;blueprint=null;if(old)loadSnap(old);
+ $('attackersCount').disabled=false;$('defendersCount').disabled=false;$('tabBuild').classList.add('active');$('tabSiege').classList.remove('active');$('buildPanel').classList.remove('hide');$('battlePanel').classList.remove('show');
+ $('attackMain').textContent=tr('⚔ НАЧАТЬ ОСАДУ','⚔ START SIEGE');$('sceneEyebrow').textContent=tr('СВОБОДНОЕ СТРОИТЕЛЬСТВО','FREE BUILD');$('sceneTitle').textContent=tr('Долина Каменных Башен','Valley of Stone Towers');
+ $('sceneSub').textContent=tr('Остров 25 × 25 · поверни камеру, чтобы осмотреть замок','25 × 25 island · rotate to inspect your castle','25 × 25 Insel · Ansicht drehen, um die Burg zu erkunden');$('modePill').textContent=tr('⚒ РЕЖИМ СТРОИТЕЛЬСТВА','⚒ BUILD MODE');
+ $('rightTitle').textContent=tr('Твоя крепость','Your castle');$('rightSubtitle').textContent=tr('Небольшой гарнизон. Большие амбиции.','A small garrison. Grand ambitions.');$('result').classList.remove('show');setTool(selected);mark();
+}
+let nextEnemyId=0;
+function spawnEnemy(){
+ let id=++nextEnemyId,spawnX=11+rnd(id*23)*3;
+ let e={id,x:spawnX,y:24.55,hp:battle.cfg.life,max:battle.cfg.life,speed:(.96+rnd(id*17)*.30)*battle.cfg.speed,attack:0,tx:null,ty:null};
+ battle.enemies.push(e);battle.spawned++;
+}
+function burst(x,y,z,amount=11,large=false){
+ if(!$('particlesToggle').checked)return;
+ for(let i=0;i<amount;i++){let life=.50+rnd(i*17+now)*.78;battle.particles.push({x,y,z,dx:(rnd(i*51+now*9)-.5)*2.0,dy:(rnd(i*35+now*13)-.5)*2.0,dz:rnd(i*73+now*9)*2.2,life,max:life,size:large?5+rnd(i*23)*5:2+rnd(i*34)*4,col:['#d1ba8b','#a18460','#f0d19a','#6f6952','#b89a75'][i%5]})}
+}
+function throwDebris(o,count){
+ for(let i=0;i<count;i++)battle.debris.push({x:o.x+.25+rnd(i*19+now)*.5,y:o.y+.25+rnd(i*27+now)*.5,z:heightAt(o.x,o.y)+1.1+rnd(i*11+now)*1.2,vx:(rnd(i*81+now)-.5)*2.5,vy:(rnd(i*63+now)-.5)*2.5,vz:1.8+rnd(i*89+now)*1.7,rot:0,spin:(rnd(i*23+now)-.5)*9,size:4+rnd(i*29)*8,col:i%2?'#c4a47a':'#82684e',life:2.8})
+}
+function strike(o,power,kind='bolt'){
+ if(!o||o.hp<=0)return;
+ let prev=o.hp;o.hp=Math.max(0,o.hp-power);
+ if(battle){burst(o.x+.5,o.y+.5,heightAt(o.x,o.y)+1.2,kind==='melee'?3:12,o.hp===0);throwDebris(o,o.hp===0?16:5)}
+ if(prev>0&&o.hp<=0){battle.pathDirty=true;if(!['tree','oak','bush'].includes(o.type)){battle.breaches++;feed('<b>✹</b> '+defs[o.type].name+' обрушена — открыт проход!')}}
+}
+function chooseBoltTarget(){
+ // Prefer gates, then fortifications along the southern approach to the flag.
+ let gate=frontGate();if(gate)return gate;
+ let candidates=b.filter(o=>o.hp>0&&['wall','tower','barracks','keep','house'].includes(o.type));
+ if(!candidates.length)return null;
+ const forward=candidates.filter(o=>o.y>=flag.y&&Math.abs(o.x-flag.x)<4);
+ const pool=forward.length?forward:candidates;
+ return pool.sort((a,c)=>((N-a.y)*3+Math.abs(a.x-flag.x)*2+(a.type==='wall'?0:5))-((N-c.y)*3+Math.abs(c.x-flag.x)*2+(c.type==='wall'?0:5)))[0]
+}
+function chooseStoneTarget(){
+ let targets=b.filter(o=>o.hp>0&&['gate','wall','tower','keep','barracks'].includes(o.type));
+ if(!targets.length)return {x:flag.x,y:flag.y,hp:0};
+ let values=targets.map(o=>({o,weight:(o.type==='gate'?8:o.type==='tower'?6:4)+b.filter(q=>q.hp>0&&Math.hypot(q.x-o.x,q.y-o.y)<=1.6).length*2+(o.y>=flag.y?4:0)}));
+ values.sort((a,c)=>c.weight-a.weight);return values[Math.floor(rnd(battle.tick*4)*Math.min(5,values.length))].o;
+}
+function stepCost(x,y){
+ if(x<0||y<0||x>=N||y>=N||(ground(x,y)==='water'&&!isBridge(x,y)))return Infinity;
+ let o=find(x,y);
+ return o?({gate:13,wall:21,tower:31,keep:35,house:15,barracks:26,tree:2,oak:2,bush:.5}[o.type]||20)*(o.hp/o.max*.8+.2):isBridge(x,y)?.88:ground(x,y)==='road'?.85:ground(x,y)==='stairs'?1.1:1;
+}
+function makePathField(){
+ let distance=Array(N*N).fill(Infinity),used=new Uint8Array(N*N),root=flag.y*N+flag.x;distance[root]=0;
+ for(let pass=0;pass<N*N;pass++){
+  let best=-1,val=Infinity;
+  for(let i=0;i<distance.length;i++)if(!used[i]&&distance[i]<val){best=i;val=distance[i]}
+  if(best<0)break;used[best]=1;
+  let x=best%N,y=Math.floor(best/N),into=stepCost(x,y);
+  if(!Number.isFinite(into))continue;
+  for(let [xx,yy] of [[x+1,y],[x-1,y],[x,y+1],[x,y-1]]){
+   if(xx<0||yy<0||xx>=N||yy>=N||!canStep(xx,yy,x,y))continue;let at=yy*N+xx;
+   if(distance[at]>val+into)distance[at]=val+into;
+  }
+ }
+ battle.pathField=distance;battle.pathDirty=false;
+}
+function nextTile(e){
+ let x=clamp(Math.floor(e.x),0,N-1),y=clamp(Math.floor(e.y),0,N-1);
+ if(x===flag.x&&y===flag.y)return {x,y};
+ let cells=[[x,y-1],[x-1,y],[x+1,y],[x,y+1]],best=null,val=Infinity;
+ for(let [xx,yy] of cells){let cost=stepCost(xx,yy);if(!Number.isFinite(cost)||!canStep(x,y,xx,yy))continue;
+  let distance=battle.pathField[yy*N+xx];let score=distance+cost;
+  if(score<val){val=score;best={x:xx,y:yy}}
+ }
+ return best;
+}
+function advanceEnemy(e,dt){
+ if(e.hp<=0)return;
+ if(Math.floor(e.x)===flag.x&&Math.floor(e.y)===flag.y){e.tx=null;e.ty=null;return}
+ if(e.tx===null||e.ty===null){let tile=nextTile(e);if(!tile)return;e.tx=tile.x;e.ty=tile.y}
+ let obstacle=find(e.tx,e.ty);
+ if(obstacle&&!['tree','oak','bush'].includes(obstacle.type)){
+  let range=Math.hypot(e.x-(e.tx+.5),e.y-(e.ty+.5));
+  if(range<1.12){e.attack+=dt;if(e.attack>.75){e.attack=0;strike(obstacle,11+rnd(e.id*33+Math.floor(battle.tick))*5,'melee')}return}
+ }
+ let goalX=e.tx+.5,goalY=e.ty+.5,dx=goalX-e.x,dy=goalY-e.y,len=Math.hypot(dx,dy);
+ if(len<.04){e.x=goalX;e.y=goalY;e.tx=null;e.ty=null;return}
+ let n=Math.min(e.speed*dt,len);e.x+=dx/len*n;e.y+=dy/len*n;
+}
+function tickBattle(dt){
+ if(!battle||battle.paused||battle.winner)return;let v=battle;
+ v.tick+=dt;v.elapsed+=dt;v.spawnTimer+=dt;
+ if(v.pathDirty)makePathField();
+ if(v.spawned<v.total&&v.spawnTimer>.78){v.spawnTimer=0;spawnEnemy()}
+ for(let e of v.enemies)advanceEnemy(e,dt);
+ // A small guard detachment protects the flag and fights infantry at close range.
+ for(let guard of v.guards){
+  if(guard.hp<=0)continue;guard.cd-=dt;
+  let close=v.enemies.filter(e=>e.hp>0&&Math.hypot(e.x-guard.x,e.y-guard.y)<1.55).sort((a,c)=>Math.hypot(a.x-guard.x,a.y-guard.y)-Math.hypot(c.x-guard.x,c.y-guard.y))[0];
+  if(close&&guard.cd<=0){close.hp-=21;guard.cd=1.05;if(close.hp<=0){v.kills++;burst(close.x,close.y,.15,5)}}
+ }
+ for(let e of v.enemies){
+  if(e.hp<=0)continue;
+  let near=v.guards.filter(g=>g.hp>0&&Math.hypot(e.x-g.x,e.y-g.y)<1.7).sort((a,c)=>Math.hypot(e.x-a.x,e.y-a.y)-Math.hypot(e.x-c.x,e.y-c.y))[0];
+  if(near){e.guardCD=(e.guardCD||0)+dt;if(e.guardCD>.68){e.guardCD=0;near.hp-=14+rnd(e.id+Math.floor(v.tick))*8;if(near.hp<=0){feed('⚔ Стража у знамени пала.');burst(near.x,near.y,.5,13)}}}
+ }
+ v.enemies=v.enemies.filter(e=>e.hp>0);let live=v.enemies;
+ // Towers and barracks defend the courtyard with arrows.
+ for(let o of b){
+  if(o.hp<=0||!['tower','keep','barracks'].includes(o.type))continue;o.cooldown=(o.cooldown||0)-dt;if(o.cooldown>0)continue;
+  let range=(o.type==='keep'?4.1:4.65)+Math.max(0,heightAt(o.x,o.y))*1.1,close=live.filter(e=>Math.hypot(e.x-o.x-.5,e.y-o.y-.5)<range).sort((a,c)=>Math.hypot(a.x-o.x-.5,a.y-o.y-.5)-Math.hypot(c.x-o.x-.5,c.y-o.y-.5))[0];
+  if(close){let old=close.hp;close.hp-=(o.type==='keep'?22:17)+Math.max(0,heightAt(o.x,o.y)-elevation(close.x,close.y))*5;o.cooldown=o.type==='barracks'?2.5:1.65;v.arrows.push({from:{x:o.x+.5,y:o.y+.5},to:{x:close.x,y:close.y},t:0});if(old>0&&close.hp<=0){v.kills++;burst(close.x,close.y,.2,4)}}
+ }
+
+  for(let c of v.trebuchets){
+   c.cd-=dt;c.firing=Math.max(0,c.firing-dt);
+   if(c.cd<=0){
+    c.cd=(c.kind==='heavy'?6.0:3.8)*v.cfg.rocks+rnd(Math.floor(v.tick)*11+c.x)*.7;
+    c.firing=1.7;
+    let o=c.kind==='heavy'?chooseStoneTarget():(frontGate()||chooseBoltTarget()||chooseStoneTarget());
+    if(o){
+     const jitter=c.kind==='heavy'?2.15:.16;
+     const aimX=clamp(o.x+.5+(rnd(v.tick*13.27+c.x*12)-.5)*jitter*2,.1,N-.1);
+     const aimY=clamp(o.y+.5+(rnd(v.tick*17.13+c.y*3)-.5)*jitter*2,.1,N-.1);
+     v.projectiles.push({from:{x:c.x,y:c.y},to:{x:aimX,y:aimY},toTileX:clamp(Math.floor(aimX),0,N-1),toTileY:clamp(Math.floor(aimY),0,N-1),kind:'stone',weaponKind:c.kind,seed:v.tick,t:-.28,dmg:c.kind==='heavy'?135:67});
+     if(rnd(v.tick+c.x)>.58)feed(c.kind==='heavy'?'● Большой требушет запустил глыбу!':'● Малый требушет выпустил камень!');
+    }
+   }
+  }
+  for(let p of v.projectiles){
+   p.t+=dt*(p.weaponKind==='heavy'?.51:.65);
+   if(p.t>=1){p.t=1;
+    const radius=p.weaponKind==='heavy'?1.75:.67;
+    const impacts=b.filter(o=>o.hp>0&&Math.hypot(o.x+.5-p.to.x,o.y+.5-p.to.y)<radius);
+    for(let o of impacts){let distance=Math.hypot(o.x+.5-p.to.x,o.y+.5-p.to.y);strike(o,p.dmg*(p.weaponKind==='heavy'?(distance<.68?1:distance<1.25?.52:.25):1),'stone')}
+    burst(p.to.x,p.to.y,heightAt(p.toTileX,p.toTileY)+.6,p.weaponKind==='heavy'?38:17,p.weaponKind==='heavy');
+   }
+  }
+
+ v.projectiles=v.projectiles.filter(p=>p.t<1);v.arrows.forEach(a=>a.t+=dt*3);v.arrows=v.arrows.filter(a=>a.t<1);
+ v.particles.forEach(p=>p.life-=dt);v.particles=v.particles.filter(p=>p.life>0);
+ for(let p of v.debris){p.vz-=9.8*dt;p.z+=p.vz*dt;p.x+=p.vx*dt;p.y+=p.vy*dt;p.rot+=p.spin*dt;p.life-=dt;if(p.z<heightAt(Math.floor(p.x),Math.floor(p.y))){p.z=heightAt(Math.floor(p.x),Math.floor(p.y));p.vz=Math.abs(p.vz)*.16;p.vx*=.72;p.vy*=.72}}
+ v.debris=v.debris.filter(p=>p.life>0&&p.z>=0);
+ // Victory is based only on changing the flag; destroying the keep is never an instant win.
+ let occupiers=live.filter(e=>Math.hypot(e.x-(flag.x+.5),e.y-(flag.y+.5))<.58).length;
+ let guarded=v.guards.some(g=>g.hp>0&&Math.hypot(g.x-(flag.x+.5),g.y-(flag.y+.5))<1.8);
+ if(occupiers&&!guarded){v.capture=Math.min(1,v.capture+dt*(1+.13*Math.min(occupiers-1,3))/5.5);
+  if(!v.captureAnnounced){feed('⚑ Враг прорвался во двор — захват знамени!');v.captureAnnounced=true}
+  if(v.capture>=.5&&!v.lowered){v.lowered=true;feed('⚑ Синий флаг снят! Враг поднимает свой.')}
+  if(v.capture>=1)finish('attack');
+ }else if(v.capture>0&&v.capture<1){v.capture=Math.max(0,v.capture-dt*.07)}
+ if(v.spawned>=v.total&&!live.some(e=>e.hp>0)&&!v.projectiles.length)finish('defend');
+ if(v.elapsed>=170&&!v.winner)finish('defend');
+ if(Math.floor(v.elapsed*5)!==Math.floor((v.elapsed-dt)*5)){updateBattleUI();updateStats()}
+}
+function finish(who){
+ if(!battle||battle.winner)return;battle.winner=who;let win=who==='defend';
+ $('resultIcon').textContent=win?'🏰':'🚩';$('resultTitle').textContent=win?tr('КРЕПОСТЬ ВЫСТОЯЛА!','CASTLE DEFENDED!'):tr('ЗНАМЯ ЗАХВАЧЕНО!','BANNER CAPTURED!');
+ $('resultText').textContent=win?tr(`Защитники удержали знамя. Побеждено ${battle.kills} воинов; разрушено построек: ${battle.breaches}. Укрепи стены и испытай другой сценарий.`,`Defenders kept their banner. Defeated ${battle.kills} invaders; ${battle.breaches} structures destroyed. Try another defense.`,`Die Verteidiger hielten das Banner. ${battle.kills} Angreifer besiegt; ${battle.breaches} Gebäude zerstört. Verstärke die Burg und versuche es erneut.`):tr(`Атакующие проникли во двор, сняли синий флаг и подняли красный за ${Math.floor(battle.elapsed)} секунд. Пробоин в обороне: ${battle.breaches}. Донжон сам по себе не определяет победителя.`,`Attackers reached the banner, lowered blue and raised red in ${Math.floor(battle.elapsed)} seconds. Structures destroyed: ${battle.breaches}. Losing the keep alone never ends the battle.`,`Die Angreifer haben nach ${Math.floor(battle.elapsed)} Sekunden das blaue Banner gesenkt und ihr rotes gehisst. Zerstörte Bauwerke: ${battle.breaches}. Der Bergfried allein entscheidet nicht über den Sieg.`);
+ $('result').classList.add('show');$('battleState').textContent=win?tr('ПОБЕДА ЗАЩИТНИКОВ','DEFENDERS WIN'):tr('ПОБЕДА АТАКУЮЩИХ','INVADERS WIN');feed(win?'🏰 <b>Знамя удержано!</b>':'🚩 <b>Враг сменил флаг!</b>');updateBattleUI();
+}
+function updateBattleUI(){
+ if(!battle)return;let v=battle,remain=v.total-v.spawned+v.enemies.filter(e=>e.hp>0).length;
+ $('battleKills').textContent=v.kills;$('battleLeft').textContent=remain;
+ $('battlePct').textContent=Math.round(v.spawned/v.total*100)+'%';$('battleProgress').style.width=100*v.spawned/v.total+'%';
+ $('capturePct').textContent=Math.round(v.capture*100)+'%';$('captureProgress').style.width=Math.round(v.capture*100)+'%';
+ $('battleGuards').textContent=tr('Стража у флага: ','Banner guards: ')+v.guards.filter(g=>g.hp>0).length+' / '+v.guards.length;
+ $('flagStatus').textContent=v.capture===0?tr('Синий флаг поднят','Blue banner flying'):v.capture<.5?tr('Снимают синий флаг','Lowering blue banner'):v.capture<1?tr('Поднимают красный флаг','Raising red banner'):tr('Знамя атакующих поднято','Invader banner raised');
+ $('pauseBtn').textContent=v.paused?tr('▶ Продолжить','▶ Resume'):tr('Ⅱ Пауза','Ⅱ Pause');
+}
+
+function rotate(n){rot=(rot+n+4)%4;mark()}
+function setZoom(n){zoom=clamp(Math.round((zoom+n)*100)/100,.65,1.23);mark()}
+function exportFile(){let data=phase==='siege'?blueprint:snapshot();let blob=new Blob([JSON.stringify({format:'CASTLECRAFT_V3_2',...JSON.parse(data)},null,2)],{type:'application/json'}),u=URL.createObjectURL(blob),a=document.createElement('a');a.href=u;a.download='Castlecraft_My_Castle.json';document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(u),1000);notify(tr('Карта экспортирована в JSON','Castle exported as JSON'))}
+function readImport(file){if(!file)return;const reader=new FileReader();reader.onload=()=>{try{let d=JSON.parse(reader.result);if(phase==='siege')backBuild();remember();loadSnap(d);mark();notify(tr('Замок успешно загружен','Castle imported successfully'))}catch(err){notify(tr('Ошибка: файл карты не распознан','Error: invalid castle file'))}};reader.readAsText(file)}
+function tryUndo(){if(phase!=='build'){notify(tr('Сначала вернись к строительству','Return to building mode first'));return}if(!history.length){notify(tr('Нет действий для отмены','Nothing to undo'));return}loadSnap(history.pop());mark();notify(tr('Последнее действие отменено','Last action undone'))}
+function cleanMap(){if(phase==='siege')backBuild();if(!confirm(tr('Удалить все постройки и ландшафт?','Remove all buildings and terrain?')))return;remember();b=[];terrain=Array(N*N).fill('grass');heights=Array(N*N).fill(0);stairs=Array(N*N).fill(false);stairDirs=Array(N*N).fill(null);stairTypes=Array(N*N).fill(null);bridges=Array(N*N).fill(false);flag={x:12,y:12};mark();notify(tr('Пустой остров готов','Empty island is ready'))}
+function restoreMap(){if(phase==='siege')backBuild();if(!confirm(tr('Загрузить демонстрационный замок? Текущая карта будет заменена.','Load the demo castle? This will replace your current map.')))return;remember();makeExample();setTool('wall');mark();notify(tr('Пример замка восстановлен','Demo castle restored'))}
+function repair(){if(phase==='siege'){notify(tr('Во время осады чинить нельзя','Cannot repair during the siege'));return}remember();b.forEach(o=>{o.hp=o.max;o.built=1});mark();notify(tr('Все постройки восстановлены','All buildings repaired'))}
+function stageCoords(e){
+ let r=canvas.getBoundingClientRect(),scale=Math.min(r.width/W,r.height/H),dx=(r.width-W*scale)/2,dy=(r.height-H*scale)/2;
+ return {x:(e.clientX-r.left-dx)/scale,y:(e.clientY-r.top-dy)/scale};
+}
+function movePointer(e){let p=stageCoords(e),n=pointerTile(p.x,p.y);let prev=hover?.x+','+hover?.y;hover=n;$('coordsPill').textContent=n?tr('Клетка ','Tile ')+(n.x+1)+' × '+(n.y+1):tr('За пределами острова','Outside the island');$('heightPill').textContent=n?tr('Высота: ','Elevation: ')+heightAt(n.x,n.y):tr('Высота: —','Elevation: —');if(prev!==(n?.x+','+n?.y))updateInspector();if(painting&&phase==='build'&&n&&['wall','erase','road','water','tree','oak','bush','bridge','raise','lower','rock','stairsUp','stairsDown'].includes(selected))doPaint(n.x,n.y)}
+canvas.addEventListener('pointermove',movePointer);canvas.addEventListener('pointerleave',()=>{hover=null;painting=false;updateInspector()});canvas.addEventListener('pointerdown',e=>{if(e.button!==0)return;const p=stageCoords(e),n=pointerTile(p.x,p.y);if(phase!=='build'||!n)return;remember();painting=true;lastPaint='';hover=n;doPaint(n.x,n.y);canvas.setPointerCapture(e.pointerId)});canvas.addEventListener('pointerup',()=>painting=false);canvas.addEventListener('pointercancel',()=>painting=false);canvas.addEventListener('contextmenu',e=>e.preventDefault());canvas.addEventListener('wheel',e=>{e.preventDefault();setZoom(e.deltaY<0?.07:-.07)},{passive:false});
+$('rotL').onclick=()=>rotate(-1);$('rotR').onclick=()=>rotate(1);$('zoomIn').onclick=()=>setZoom(.09);$('zoomOut').onclick=()=>setZoom(-.09);
+$('tabBuild').onclick=()=>backBuild();$('tabSiege').onclick=()=>{if(phase==='build')setupSiege()};$('attackMain').onclick=()=>setupSiege();$('backBtn').onclick=backBuild;$('repeatBtn').onclick=setupSiege;$('resultAgain').onclick=setupSiege;$('resultBack').onclick=backBuild;$('pauseBtn').onclick=()=>{if(battle&&!battle.winner){battle.paused=!battle.paused;updateBattleUI();notify(battle.paused?tr('Осада приостановлена','Siege paused'):tr('Штурм продолжается','Siege resumed'))}};
+$('exportBtn').onclick=exportFile;$('importBtn').onclick=()=>$('filePicker').click();$('filePicker').onchange=e=>{readImport(e.target.files[0]);e.target.value=''};$('undoBtn').onclick=tryUndo;$('clearBtn').onclick=cleanMap;$('restoreBtn').onclick=restoreMap;$('repairBtn').onclick=repair;
+document.addEventListener('keydown',e=>{if(e.target.tagName==='INPUT'||e.target.tagName==='SELECT')return;if(e.key.toLowerCase()==='q')rotate(-1);else if(e.key.toLowerCase()==='e')rotate(1);else if(e.key.toLowerCase()==='f'&&phase==='build')setTool('flag');else if(e.key==='+'||e.key==='=')setZoom(.1);else if(e.key==='-')setZoom(-.1);else if(e.code==='Space'&&phase==='siege'){e.preventDefault();$('pauseBtn').click()}else if(e.key==='Escape'&&phase==='siege')backBuild();else if(e.key>='0'&&e.key<='9'&&phase==='build'){let n=(Number(e.key)+9)%10;setTool(toolList[n])}else if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='z'){e.preventDefault();tryUndo()}});
+document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='hidden')persist()});window.addEventListener('beforeunload',persist);setInterval(()=>{if(dirty)persist()},5000);
+try{let saved=localStorage.getItem(SAVEKEY)||localStorage.getItem(OLDKEY)||localStorage.getItem(LEGACYKEY);if(saved){loadSnap(saved);notify(tr('Восстановлена сохранённая крепость','Saved castle restored'))}else makeExample()}catch(err){makeExample()}
+buildToolButtons();initializeTextNodes();updateLanguage();updateStats();$('selectedPill').textContent=tr('Инструмент: ','Tool: ')+itemName(selected);persist();let previous=performance.now();function loop(t){let dt=clamp((t-previous)/1000,0,.06);previous=t;now+=dt;if(phase==='build')for(let o of b)if(o.built<1)o.built=Math.min(1,o.built+dt*1.18);tickBattle(dt);render();requestAnimationFrame(loop)}requestAnimationFrame(loop);
+})();
+</script>
+</body></html>
